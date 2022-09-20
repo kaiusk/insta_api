@@ -1,14 +1,17 @@
-import express, {Request, Response} from 'express';
-import HttpStatus from "http-status-codes";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+import express from "express";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json);
+const user = require("./controller/user");
 
-app.get("/", (req: Request, res: Response) => {
-    res.status(HttpStatus.OK).json({ message: "OK" });
+app.use(express.json());
+
+app.use("/users", user);
+
+app.listen(PORT, () => {
+  console.log("Server is running on port " + PORT);
 });
-
-app.listen(3000, ()=> {
-    console.log('server is running...')
-})
