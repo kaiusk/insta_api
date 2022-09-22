@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { checkSchema, validationResult } from "express-validator";
 import { MIUser } from "../model/mi-user";
+import { Password } from "../service/Password";
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const users: MIUser[] = [
     username: "juhan",
     name: "Juhan Juurikas",
     genderId: 1,
-    bio: "",
+    bio: "...",
   },
 ];
 
@@ -147,22 +148,24 @@ router
         .json({ errors: errors.array() });
     }
 
-    const { username, name, email, password, genderId } = req.body;
+    const { username, name, email, password, genderId, bio } = req.body;
     const id = users.length + 1;
-    const newUser: MIUser = {
-      bio: "",
-      genderId,
-      id,
-      username,
-      name,
-      email,
-      password,
-    };
-    users.push(newUser);
+    Password.toHash(password).then((hashedPassword) => {
+      const newUser: MIUser = {
+        bio,
+        genderId,
+        id,
+        username,
+        name,
+        email,
+        password: hashedPassword,
+      };
+      users.push(newUser);
 
-    res.status(StatusCodes.CREATED).json({
-      success: true,
-      message: `User with id ${newUser.id} created`,
+      res.status(StatusCodes.CREATED).json({
+        success: true,
+        message: `User with id ${newUser.id} created`,
+      });
     });
   })
   .put("/:id", userUpdateValidation, (req: Request, res: Response) => {
@@ -200,6 +203,8 @@ router
       success: true,
       message: `User deleted`,
     });
-  });
+  })
+  .post("/login", (req, res) => {})
+  .get("/logout", (req, res) => {});
 
-module.exports = router;
+export default module.exports = router;
