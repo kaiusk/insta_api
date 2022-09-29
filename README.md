@@ -26,7 +26,38 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
    ```sh
    npm start
    ```
-   
+
+## API endpoints
+
+### User
+
+1. `POST /users/login` logib sisse
+2. `GET /users/:id` kasutaja profiil
+3. `POST /users` kasutaja loomine
+4. `DELETE /users/:id` kasutaja kustutamine
+5. `PUT /users/:id` kasutaja andmete muutmine
+6. `POST /users/fallow/:id` kasutaja jälgima hakkamine
+7. `GET /user/posts/:id` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
+
+### Post
+
+1. `GET /posts/overview/:id` postitus, koos ühe meedia faili ja postitusega seotud kogu meedia failide arvuga
+2. `GET /posts/header/:id` postituse päis: kasutajanimi, profiili pilt, meeldimiste arv
+3. `GET /posts/media/:id` postituse meedia failid
+4. `GET /posts/comments/:id` postituse meedia failid
+5. `POST /posts/comments/:id` lisa kommentaar
+6. `POST /posts/like/:id` lisa like
+7. `POST /posts/media/:id` lisa meedia postitusele
+8. `POST /posts/:id` lisa postitus
+9. `DELETE /posts/:id` kustuta postitus
+
+### Stats
+
+1. `GET /stats/` Analüütilised andmed
+2. `GET /stats/top-users` Top 10 kasutajat kõige rohkemate jälgijatega
+3. `GET /stats/users-added` Kasutajaks registreerumised kuupäevade kaupa
+4. `GET /stats/users-gender` Kasutajate jagunemine soo järgi
+
 <!-- CONTACT -->
 
 ## Kontakt
