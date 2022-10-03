@@ -1,4 +1,4 @@
-## REST api "Mini-Insta" projeltile
+# REST api "Mini-Insta" projeltile
 
 <p id="top"></p>
 
@@ -31,12 +31,12 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 
 ### User
 
-1. `POST /users/login` logib sisse
-2. `GET /users/:id` kasutaja profiil
-3. `POST /users` kasutaja loomine
-4. `DELETE /users/:id` kasutaja kustutamine
-5. `PUT /users/:id` kasutaja andmete muutmine
-6. `POST /users/fallow/:id` kasutaja jälgima hakkamine
+1. `POST /users/login` logib sisse - ok
+2. `GET /users/:id` kasutaja profiil - ok
+3. `POST /users` kasutaja loomine - ok
+4. `DELETE /users/:id` kasutaja kustutamine - ok
+5. `PUT /users/:id` kasutaja andmete muutmine - ok
+6. `POST /users/follow/:id` kasutaja jälgima hakkamine
 7. `GET /user/posts/:id` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
 
 ### Post

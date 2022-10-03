@@ -1,21 +1,30 @@
 import * as dotenv from "dotenv";
-import userRoutes from "./controller/user";
 
 dotenv.config();
-import express, { Request, Response, NextFunction } from "express";
+import userRoutes from "./controller/user";
+import express from "express";
+import { expressjwt } from "express-jwt";
+import cors from "cors";
+import AuthErrorHandler from "./middleware/authErrorHandler";
+//import logger from "./middleware/logger";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const basePath = "/" + process.env.BASE_URL + "/" + process.env.VERSION;
 
+app.use(cors());
 app.use(express.json());
+//app.use(logger);
+app.use(
+  expressjwt({
+    secret: process.env.JWT_SECRET || "secret",
+    algorithms: ["HS256"],
+  }).unless({
+    path: [basePath + "/users/login"],
+  })
+);
 
-const logger = (req: Request, res: Response, next: NextFunction) => {
-  console.log(`${req.method}: ${req.url} - ${new Date().toISOString()}`);
-  next();
-};
-
-app.use(logger);
+app.use(AuthErrorHandler);
 
 app.use(basePath + "/users", userRoutes);
 

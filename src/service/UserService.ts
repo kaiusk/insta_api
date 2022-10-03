@@ -4,6 +4,7 @@ import { MIUser } from "../model/mi-user";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 
 export default class UserService {
   /**
@@ -34,15 +35,25 @@ export default class UserService {
     if (username && password) {
       MariaDB.query("select * from MI_User where Username=?", [username]).then(
         (u) => {
-          if (!u) {
+          if (!u.length) {
             res
               .status(StatusCodes.FORBIDDEN)
               .json({ message: "invalid credentials" });
           } else {
             Password.compare(u[0].Password, password).then((correct) => {
-              if (correct)
-                res.status(StatusCodes.OK).json({ message: "success" });
-              else
+              if (correct) {
+                delete u[0].Password;
+                const token = jwt.sign(
+                  {
+                    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                    data: u[0],
+                  },
+                  process.env.JWT_SECRET || "secret"
+                );
+                res
+                  .status(StatusCodes.OK)
+                  .json({ message: "success", token: token });
+              } else
                 res
                   .status(StatusCodes.FORBIDDEN)
                   .json({ message: "invalid credentials" });
@@ -97,18 +108,18 @@ export default class UserService {
    */
   static async deleteUser(req: Request, res: Response) {
     /*UserService.deleteUser(+req.params.id).then((result) => {
-            if (!result) {
-                res.status(StatusCodes.NOT_FOUND).json({
-                    success: false,
-                    message: `User not found`,
-                });
-            } else {
-                res.status(StatusCodes.OK).json({
-                    success: true,
-                    message: `User deleted`,
-                });
-            }
-        });*/
+                                                    if (!result) {
+                                                        res.status(StatusCodes.NOT_FOUND).json({
+                                                            success: false,
+                                                            message: `User not found`,
+                                                        });
+                                                    } else {
+                                                        res.status(StatusCodes.OK).json({
+                                                            success: true,
+                                                            message: `User deleted`,
+                                                        });
+                                                    }
+                                                });*/
     return MariaDB.query("delete from MI_User where ID=?", [+req.params.id]);
   }
 
@@ -179,5 +190,29 @@ export default class UserService {
       .catch((reason) => {
         return { success: false, error: reason.text };
       });
+  }
+
+  static async follow(req: Request, res: Response) {}
+
+  static async getPosts(req: Request, res: Response) {}
+
+  /**
+   * set all users same password (testing only!!!)
+   * @param req
+   * @param res
+   */
+  static async setPasswords(req: Request, res: Response) {
+    return MariaDB.query("select ID from MI_User").then((data) => {
+      data.forEach((id: any) => {
+        Password.toHash("test").then((hashedPassword) => {
+          return MariaDB.query("update MI_User set Password=? where ID=?", [
+            hashedPassword,
+            id.ID,
+          ]).then((_) => {
+            console.log(id.ID, "updated");
+          });
+        });
+      });
+    });
   }
 }

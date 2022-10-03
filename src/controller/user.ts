@@ -7,11 +7,13 @@ const router = express.Router();
 
 router
   .get("/", UserService.getUsers)
+  //.get("/passwords", UserService.setPasswords)
+  .post("/login", UserService.login)
   .get("/:id", UserService.getUser)
   .post("/", newUserValidation, UserService.addUser)
   .put("/:id", userUpdateValidation, UserService.updateUser)
   .delete("/:id", UserService.deleteUser)
-  .post("/login", UserService.login)
-  .get("/logout", (req, res) => {});
+  .post("/follow/:id", UserService.follow)
+  .get("/posts/:id", UserService.getPosts);
 
 export default module.exports = router;
