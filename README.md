@@ -1,4 +1,6 @@
-# REST api "Mini-Insta" projeltile
+!["Mini-Insta"](./MINI_logo.svg)
+
+# REST api Mini-Insta projektile
 
 <p id="top"></p>
 
@@ -7,9 +9,11 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 ### Ülesehitus
 
 1. `index.ts`
-2. `/controller` - iga funktsionaalsuse/route jaoks oma fail
-3. `/model` - andmetüüpide kirjeldused
-4. `.env` - konfiguratsiooni fail
+2. `/controllers` - iga funktsionaalsuse/route jaoks oma fail
+3. `/services` - iga funktsionaalsuse jaoks oma fail
+4. `/middleware` - siin hoitakse erinevaid middleware faile
+5. `/model` - andmetüüpide kirjeldused
+6. `.env` - konfiguratsiooni fail
 
 ### Seadistamine
 
@@ -37,19 +41,20 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 4. `DELETE /users/:id` kasutaja kustutamine - ok
 5. `PUT /users/:id` kasutaja andmete muutmine - ok
 6. `POST /users/follow/:id` kasutaja jälgima hakkamine
-7. `GET /user/posts/:id` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
+7. `DELETE /users/follow/:id` lõpeta kasutaja jälgimine
 
 ### Post
 
-1. `GET /posts/overview/:id` postitus, koos ühe meedia faili ja postitusega seotud kogu meedia failide arvuga
-2. `GET /posts/header/:id` postituse päis: kasutajanimi, profiili pilt, meeldimiste arv
-3. `GET /posts/media/:id` postituse meedia failid
-4. `GET /posts/comments/:id` postituse meedia failid
-5. `POST /posts/comments/:id` lisa kommentaar
-6. `POST /posts/like/:id` lisa like
-7. `POST /posts/media/:id` lisa meedia postitusele
-8. `POST /posts/:id` lisa postitus
-9. `DELETE /posts/:id` kustuta postitus
+1. `GET /posts/:id` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
+2. `GET /posts/overview/:id` postitus, koos ühe meedia faili ja postitusega seotud kogu meedia failide arvuga
+3. `GET /posts/header/:id` postituse päis: kasutajanimi, profiili pilt, meeldimiste arv
+4. `GET /posts/media/:id` postituse meedia failid
+5. `GET /posts/comments/:id` postituse meedia failid
+6. `POST /posts/comments/:id` lisa kommentaar
+7. `POST /posts/like/:id` lisa like
+8. `POST /posts/media/:id` lisa meedia postitusele
+9. `POST /posts/:id` lisa postitus
+10. `DELETE /posts/:id` kustuta postitus
 
 ### Stats
 

@@ -104,23 +104,20 @@ export default class UserService {
 
   /**
    * kasutaja kustutamine
-   * @param id
+   * @param req
+   * @param res
    */
   static async deleteUser(req: Request, res: Response) {
-    /*UserService.deleteUser(+req.params.id).then((result) => {
-                                                    if (!result) {
-                                                        res.status(StatusCodes.NOT_FOUND).json({
-                                                            success: false,
-                                                            message: `User not found`,
-                                                        });
-                                                    } else {
-                                                        res.status(StatusCodes.OK).json({
-                                                            success: true,
-                                                            message: `User deleted`,
-                                                        });
-                                                    }
-                                                });*/
-    return MariaDB.query("delete from MI_User where ID=?", [+req.params.id]);
+    return MariaDB.query("delete from MI_User where ID=?", [+req.params.id])
+      .then((result) => {
+        res.status(StatusCodes.OK).json({
+          success: true,
+          data: result,
+        });
+      })
+      .catch((errors) => {
+        res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+      });
   }
 
   static async addUser(req: Request, res: Response) {
@@ -131,26 +128,30 @@ export default class UserService {
         .json({ errors: errors.array() });
     }
     const user: MIUser = Object.assign(req.body);
-    Password.toHash(req.body.password as string).then((hashedPassword) => {
-      user.password = hashedPassword;
-      return MariaDB.query(
-        "insert into MI_User (Bio, GenderID, Username, Name, Email, Password) values (?,?,?,?,?,?)",
-        [
-          user.bio,
-          user.genderId,
-          user.username,
-          user.name,
-          user.email as string,
-          user.password as string,
-        ]
-      )
-        .then((result) => {
-          //return { success: true, data: result };
-        })
-        .catch((reason) => {
-          //return { success: false, error: reason.text };
-        });
-    });
+    return Password.toHash(req.body.password as string).then(
+      (hashedPassword) => {
+        user.password = hashedPassword;
+        MariaDB.query(
+          "insert into MI_User (Bio, GenderID, Username, Name, Email, Password) values (?,?,?,?,?,?)",
+          [
+            user.bio,
+            user.genderId,
+            user.username,
+            user.name,
+            user.email as string,
+            user.password as string,
+          ]
+        )
+          .then((result) => {
+            res.status(StatusCodes.CREATED).json({ data: result });
+          })
+          .catch((errors) => {
+            res
+              .status(StatusCodes.BAD_REQUEST)
+              .json({ errors: errors.array() });
+          });
+      }
+    );
   }
 
   static async updateUser(req: Request, res: Response) {
@@ -185,14 +186,56 @@ export default class UserService {
       ]
     )
       .then((result) => {
-        return { success: true, data: result };
+        res.status(StatusCodes.OK).json({ success: true, data: result });
       })
       .catch((reason) => {
-        return { success: false, error: reason.text };
+        res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
       });
   }
 
-  static async follow(req: Request, res: Response) {}
+  static async follow(req: Request, res: Response) {
+    const followerId = req.auth?.data.ID; // get followerID from jwt token
+    const followeeId = req.params.id;
+    if (followerId && followeeId) {
+      return MariaDB.query(
+        "insert into MI_Following (FollowerUserID, FolloweeUserID) VALUES (?,?)",
+        [followerId, followeeId]
+      )
+        .then((result) => {
+          res.status(StatusCodes.OK).json({
+            success: true,
+            data: result,
+          });
+        })
+        .catch((errors) => {
+          res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+        });
+    } else {
+      res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
+    }
+  }
+
+  static async unFollow(req: Request, res: Response) {
+    const followerId = req.auth?.data.ID; // get followerID from jwt token
+    const followeeId = req.params.id;
+    if (followerId && followeeId) {
+      return MariaDB.query(
+        "delete from MI_Following where FollowerUserID=? and FolloweeUserID=?",
+        [followerId, followeeId]
+      )
+        .then((result) => {
+          res.status(StatusCodes.OK).json({
+            success: true,
+            data: result,
+          });
+        })
+        .catch((errors) => {
+          res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+        });
+    } else {
+      res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
+    }
+  }
 
   static async getPosts(req: Request, res: Response) {}
 

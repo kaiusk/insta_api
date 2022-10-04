@@ -1,7 +1,7 @@
 import express from "express";
-import UserService from "../service/UserService";
-import { newUserValidation } from "../middleware/createUserValidator";
-import { userUpdateValidation } from "../middleware/updateUserValidator";
+import UserService from "../services/UserService";
+import newUserValidation from "../middleware/createUserValidator";
+import userUpdateValidation from "../middleware/updateUserValidator";
 
 const router = express.Router();
 
@@ -14,6 +14,6 @@ router
   .put("/:id", userUpdateValidation, UserService.updateUser)
   .delete("/:id", UserService.deleteUser)
   .post("/follow/:id", UserService.follow)
-  .get("/posts/:id", UserService.getPosts);
+  .delete("/follow/:id", UserService.unFollow);
 
 export default module.exports = router;
