@@ -1,5 +1,5 @@
-import { MariaDB } from "./MariaDB";
-import { Password } from "./Password";
+import { MariaDB } from "./mariaDBService";
+import { PasswordService } from "./passwordService";
 import { MIUser } from "../model/mi-user";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -40,7 +40,7 @@ export default class UserService {
               .status(StatusCodes.FORBIDDEN)
               .json({ message: "invalid credentials" });
           } else {
-            Password.compare(u[0].Password, password).then((correct) => {
+            PasswordService.compare(u[0].Password, password).then((correct) => {
               if (correct) {
                 delete u[0].Password;
                 const token = jwt.sign(
@@ -128,7 +128,7 @@ export default class UserService {
         .json({ errors: errors.array() });
     }
     const user: MIUser = Object.assign(req.body);
-    return Password.toHash(req.body.password as string).then(
+    return PasswordService.toHash(req.body.password as string).then(
       (hashedPassword) => {
         user.password = hashedPassword;
         MariaDB.query(
@@ -194,6 +194,7 @@ export default class UserService {
   }
 
   static async follow(req: Request, res: Response) {
+    // @ts-ignore
     const followerId = req.auth?.data.ID; // get followerID from jwt token
     const followeeId = req.params.id;
     if (followerId && followeeId) {
@@ -216,6 +217,7 @@ export default class UserService {
   }
 
   static async unFollow(req: Request, res: Response) {
+    // @ts-ignore
     const followerId = req.auth?.data.ID; // get followerID from jwt token
     const followeeId = req.params.id;
     if (followerId && followeeId) {
@@ -237,7 +239,30 @@ export default class UserService {
     }
   }
 
-  static async getPosts(req: Request, res: Response) {}
+  static async getProfile(req: Request, res: Response) {
+    return MariaDB.query(
+      "select MU.Username,\n" +
+        "       MU.Name,\n" +
+        "       MU.ProfileImageUrl,\n" +
+        "       MU.Bio,\n" +
+        "       count(MP.ID)             as posts,\n" +
+        "       count(MF.FollowerUserID) as fallowers,\n" +
+        "       count(M.FollowerUserID)  as fallowees\n" +
+        "from MI_User MU\n" +
+        "         left join MI_Post MP on MU.ID = MP.UserID\n" +
+        "         left join MI_Following MF on MU.ID = MF.FolloweeUserID\n" +
+        "         left join MI_Following M on MU.ID = M.FollowerUserID\n" +
+        "where MU.ID = ?\n" +
+        "group by MU.ID",
+      [+req.params.id]
+    )
+      .then((data) => {
+        res.status(StatusCodes.OK).json(data);
+      })
+      .catch((error) => {
+        res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
+      });
+  }
 
   /**
    * set all users same password (testing only!!!)
@@ -247,7 +272,7 @@ export default class UserService {
   static async setPasswords(req: Request, res: Response) {
     return MariaDB.query("select ID from MI_User").then((data) => {
       data.forEach((id: any) => {
-        Password.toHash("test").then((hashedPassword) => {
+        PasswordService.toHash("test").then((hashedPassword) => {
           return MariaDB.query("update MI_User set Password=? where ID=?", [
             hashedPassword,
             id.ID,

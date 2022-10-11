@@ -1,17 +1,21 @@
 import express from "express";
-import PostService from "../services/PostService";
+import PostService from "../services/postService";
+import newPostValidation from "../middleware/addPostValidator";
+import newMediaValidation from "../middleware/addMediaValidator";
+import newCommentValidation from "../middleware/addCommentValidator";
 
 const router = express.Router();
 
 router
   .get("/:id", PostService.getPost)
   .get("/overview/:id", PostService.getOverview)
-  .get("/header/:id", PostService.getHeader)
+  .get("/media/:id", PostService.getMedia)
   .get("/comments/:id", PostService.getComments)
-  .post("/comments:id", PostService.addComment)
+  .post("/comments:id", newCommentValidation, PostService.addComment)
   .post("/like/:id", PostService.addLike)
-  .post("/media/:id", PostService.addMedia)
-  .post("/", PostService.addPost)
+  .delete("/like/:id", PostService.removeLike)
+  .post("/media/:id", newMediaValidation, PostService.addMedia)
+  .post("/", newPostValidation, PostService.addPost)
   .delete("/:id", PostService.deletePost);
 
 export default module.exports = router;

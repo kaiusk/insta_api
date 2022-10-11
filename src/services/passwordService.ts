@@ -4,7 +4,7 @@ import { promisify } from "util";
 // scrypt is callback based so with promisify we can await it
 const scryptAsync = promisify(scrypt);
 
-export class Password {
+export class PasswordService {
   static async toHash(password: string) {
     const salt = randomBytes(16).toString("hex");
     const buf = (await scryptAsync(password, salt, 64)) as Buffer;
