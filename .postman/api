@@ -1,0 +1,17 @@
+id = d84eea83-da40-42c0-81e9-fc54a4ca67e2
+
+[relations]
+
+[relations.collections]
+rootDirectory = postman/collections
+files[] = {"id":"2191414-6278d6cd-fdd6-4307-8a9f-41901143d5ef","path":"MI-Insta.json","metaData":{}}
+
+[relations.collections.metaData]
+
+[relations.apiDefinition]
+rootDirectory = postman/schemas
+files[] = {"path":"index.yaml","metaData":{}}
+
+[relations.apiDefinition.metaData]
+type = openapi:3
+rootFiles[] = index.yaml
