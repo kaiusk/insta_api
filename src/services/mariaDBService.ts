@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
+import MariaDBService from "mariadb";
 
 dotenv.config();
-const MariaDBService = require("mariadb");
 const pool = MariaDBService.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -12,14 +12,16 @@ const pool = MariaDBService.createPool({
   bigNumberStrings: true,
 });
 
-export class MariaDB {
-  static async query(sql: string, params?: (number | string)[]) {
+const MariaDB = {
+  query: async (sql: string, params?: Array<number | string>) => {
     let conn;
     try {
       conn = await pool.getConnection();
-      return await conn.query(sql, params);
+      return await conn.query(sql, params).finally(() => {});
     } finally {
-      if (conn) conn.release(); //release to pool
+      if (conn) conn.release().finally(() => {}); // release to pool
     }
-  }
-}
+  },
+};
+
+export default MariaDB;

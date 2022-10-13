@@ -1,18 +1,18 @@
-import { MariaDB } from "./mariaDBService";
-import { PasswordService } from "./passwordService";
+import MariaDB from "./mariaDBService";
+import PasswordService from "./passwordService";
 import { MIUser } from "../model/mi-user";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
-export default class UserService {
+const UserService = {
   /**
    * kasutajate list
    * @param req
    * @param res
    */
-  static async getUsers(req: Request, res: Response) {
+  getUsers(req: Request, res: Response) {
     const take: number = req.query.take ? +req.query.take : 10;
     const page: number = req.query.page ? +req.query.page : 1;
     const offset = page * take;
@@ -20,62 +20,75 @@ export default class UserService {
       `select *
              from MI_User
              limit ${offset}, ${take}`
-    ).then((result) => {
-      res.status(StatusCodes.OK).json(result);
-    });
-  }
+    )
+      .then((result: any) => {
+        res.status(StatusCodes.OK).json(result);
+      })
+      .catch(() => {
+        res
+          .status(StatusCodes.FORBIDDEN)
+          .json({ message: "invalid credentials" });
+      });
+  },
 
   /**
    * kasutaja sisse logimine
    * @param req
    * @param res
    */
-  static async login(req: Request, res: Response) {
+  login(req: Request, res: Response) {
     const { username, password } = req.body;
     if (username && password) {
-      MariaDB.query("select * from MI_User where Username=?", [username]).then(
-        (u) => {
+      MariaDB.query("select * from MI_User where Username=?", [username])
+        .then((u: string | any[]) => {
           if (!u.length) {
             res
               .status(StatusCodes.FORBIDDEN)
               .json({ message: "invalid credentials" });
           } else {
-            PasswordService.compare(u[0].Password, password).then((correct) => {
-              if (correct) {
-                delete u[0].Password;
-                const token = jwt.sign(
-                  {
-                    exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                    data: u[0],
-                  },
-                  process.env.JWT_SECRET || "secret"
-                );
-                res
-                  .status(StatusCodes.OK)
-                  .json({ message: "success", token: token });
-              } else
-                res
-                  .status(StatusCodes.FORBIDDEN)
-                  .json({ message: "invalid credentials" });
-            });
+            PasswordService.compare(u[0].Password, password)
+              .then((correct) => {
+                if (correct) {
+                  delete u[0].Password;
+                  const token = jwt.sign(
+                    {
+                      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                      data: u[0],
+                    },
+                    process.env.JWT_SECRET ?? "secret"
+                  );
+                  res
+                    .status(StatusCodes.OK)
+                    .json({ message: "success", token });
+                } else {
+                  res
+                    .status(StatusCodes.FORBIDDEN)
+                    .json({ message: "invalid credentials" });
+                }
+              })
+              .catch(() => {});
           }
-        }
-      );
+        })
+        .catch(() => {
+          res
+            .status(StatusCodes.FORBIDDEN)
+            .json({ message: "invalid credentials" });
+        });
     } else {
       res
         .status(StatusCodes.FORBIDDEN)
         .json({ message: "invalid credentials" });
     }
-  }
+  },
 
   /**
    * ühe kasutaja profiil
    * @param req
    * @param res
    */
-  static async getUser(req: Request, res: Response) {
+  getUser(req: Request, res: Response) {
     if (+req.params.id) {
-      return MariaDB.query(
+      MariaDB.query(
         "select MU.Username,\n" +
           "       MU.Name,\n" +
           "       MU.ProfileImageUrl,\n" +
@@ -91,36 +104,37 @@ export default class UserService {
           "group by MU.ID",
         [+req.params.id]
       )
-        .then((row) => {
+        .then((row: any[]) => {
           res.status(StatusCodes.OK).json(row[0]);
         })
-        .catch((e) => {
+        .catch((e: any) => {
           console.log(e);
           res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
         });
-    } else
+    } else {
       res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
-  }
+    }
+  },
 
   /**
    * kasutaja kustutamine
    * @param req
    * @param res
    */
-  static async deleteUser(req: Request, res: Response) {
-    return MariaDB.query("delete from MI_User where ID=?", [+req.params.id])
-      .then((result) => {
+  deleteUser(req: Request, res: Response) {
+    MariaDB.query("delete from MI_User where ID=?", [+req.params.id])
+      .then((result: any) => {
         res.status(StatusCodes.OK).json({
           success: true,
           data: result,
         });
       })
-      .catch((errors) => {
+      .catch((errors: { array: () => any }) => {
         res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
       });
-  }
+  },
 
-  static async addUser(req: Request, res: Response) {
+  addUser(req: Request, res: Response) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
@@ -128,8 +142,8 @@ export default class UserService {
         .json({ errors: errors.array() });
     }
     const user: MIUser = Object.assign(req.body);
-    return PasswordService.toHash(req.body.password as string).then(
-      (hashedPassword) => {
+    PasswordService.toHash(req.body.password as string)
+      .then((hashedPassword) => {
         user.password = hashedPassword;
         MariaDB.query(
           "insert into MI_User (Bio, GenderID, Username, Name, Email, Password) values (?,?,?,?,?,?)",
@@ -139,22 +153,24 @@ export default class UserService {
             user.username,
             user.name,
             user.email as string,
-            user.password as string,
+            user.password,
           ]
         )
-          .then((result) => {
+          .then((result: any) => {
             res.status(StatusCodes.CREATED).json({ data: result });
           })
-          .catch((errors) => {
+          .catch((errors: { array: () => any }) => {
             res
               .status(StatusCodes.BAD_REQUEST)
               .json({ errors: errors.array() });
           });
-      }
-    );
-  }
+      })
+      .catch((errors) => {
+        res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+      });
+  },
 
-  static async updateUser(req: Request, res: Response) {
+  updateUser(req: Request, res: Response) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
@@ -173,74 +189,74 @@ export default class UserService {
       },
       req.body
     );
-    return MariaDB.query(
+    MariaDB.query(
       "update MI_User set Bio=?, GenderID=?, Name=?, Email=?, ProfileImageUrl=?, Website=? where ID=?",
       [
-        setUser.bio as string,
-        setUser.genderId as number,
-        setUser.name as string,
+        setUser.bio,
+        setUser.genderId,
+        setUser.name,
         setUser.email as string,
         setUser.profileImageUrl as string,
         setUser.website as string,
         +req.params.id,
       ]
     )
-      .then((result) => {
+      .then((result: any) => {
         res.status(StatusCodes.OK).json({ success: true, data: result });
       })
-      .catch((reason) => {
+      .catch(() => {
         res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
       });
-  }
+  },
 
-  static async follow(req: Request, res: Response) {
-    // @ts-ignore
+  follow(req: Request, res: Response) {
+    // @ts-expect-error
     const followerId = req.auth?.data.ID; // get followerID from jwt token
     const followeeId = req.params.id;
     if (followerId && followeeId) {
-      return MariaDB.query(
+      MariaDB.query(
         "insert into MI_Following (FollowerUserID, FolloweeUserID) VALUES (?,?)",
         [followerId, followeeId]
       )
-        .then((result) => {
+        .then((result: any) => {
           res.status(StatusCodes.OK).json({
             success: true,
             data: result,
           });
         })
-        .catch((errors) => {
+        .catch((errors: { array: () => any }) => {
           res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
         });
     } else {
       res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
     }
-  }
+  },
 
-  static async unFollow(req: Request, res: Response) {
-    // @ts-ignore
+  unFollow(req: Request, res: Response) {
+    // @ts-expect-error
     const followerId = req.auth?.data.ID; // get followerID from jwt token
     const followeeId = req.params.id;
-    if (followerId && followeeId) {
-      return MariaDB.query(
+    if (followerId.length && followeeId.length) {
+      MariaDB.query(
         "delete from MI_Following where FollowerUserID=? and FolloweeUserID=?",
         [followerId, followeeId]
       )
-        .then((result) => {
+        .then((result: any) => {
           res.status(StatusCodes.OK).json({
             success: true,
             data: result,
           });
         })
-        .catch((errors) => {
+        .catch((errors: { array: () => any }) => {
           res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
         });
     } else {
       res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
     }
-  }
+  },
 
-  static async getProfile(req: Request, res: Response) {
-    return MariaDB.query(
+  getProfile(req: Request, res: Response) {
+    MariaDB.query(
       "select MU.Username,\n" +
         "       MU.Name,\n" +
         "       MU.ProfileImageUrl,\n" +
@@ -256,31 +272,39 @@ export default class UserService {
         "group by MU.ID",
       [+req.params.id]
     )
-      .then((data) => {
+      .then((data: any) => {
         res.status(StatusCodes.OK).json(data);
       })
-      .catch((error) => {
+      .catch(() => {
         res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
       });
-  }
+  },
 
   /**
    * set all users same password (testing only!!!)
    * @param req
    * @param res
    */
-  static async setPasswords(req: Request, res: Response) {
-    return MariaDB.query("select ID from MI_User").then((data) => {
-      data.forEach((id: any) => {
-        PasswordService.toHash("test").then((hashedPassword) => {
-          return MariaDB.query("update MI_User set Password=? where ID=?", [
-            hashedPassword,
-            id.ID,
-          ]).then((_) => {
-            console.log(id.ID, "updated");
-          });
+  setPasswords(req: Request, res: Response) {
+    MariaDB.query("select ID from MI_User")
+      .then((data: any[]) => {
+        data.forEach((id: any) => {
+          PasswordService.toHash("test")
+            .then(async (hashedPassword) => {
+              MariaDB.query("update MI_User set Password=? where ID=?", [
+                hashedPassword,
+                id.ID,
+              ])
+                .then((_: any) => {
+                  console.log(id.ID, "updated");
+                })
+                .catch(() => {});
+            })
+            .catch(() => {});
         });
-      });
-    });
-  }
-}
+      })
+      .catch(() => {});
+  },
+};
+
+export default UserService;

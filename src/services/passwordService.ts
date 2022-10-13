@@ -4,14 +4,14 @@ import { promisify } from "util";
 // scrypt is callback based so with promisify we can await it
 const scryptAsync = promisify(scrypt);
 
-export class PasswordService {
-  static async toHash(password: string) {
+const PasswordService = {
+  toHash: async (password: string) => {
     const salt = randomBytes(16).toString("hex");
     const buf = (await scryptAsync(password, salt, 64)) as Buffer;
     return `${buf.toString("hex")}.${salt}`;
-  }
+  },
 
-  static async compare(storedPassword: string, suppliedPassword: string) {
+  compare: async (storedPassword: string, suppliedPassword: string) => {
     try {
       const [hashedPassword, salt] = storedPassword.split(".");
       // we hash the new sign-in password
@@ -21,5 +21,7 @@ export class PasswordService {
     } catch (e) {
       return false;
     }
-  }
-}
+  },
+};
+
+export default PasswordService;
