@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import userRoutes from "./controllers/user";
 import postRoutes from "./controllers/post";
+import statRoutes from "./controllers/stat";
 import express from "express";
 import { expressjwt } from "express-jwt";
 import cors from "cors";
@@ -29,10 +30,12 @@ app.use(
 );
 
 app.use(AuthErrorHandler);
-
 app.use(basePath + "/users", userRoutes);
 app.use(basePath + "/posts", postRoutes);
+app.use(basePath + "/stats", statRoutes);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default server;

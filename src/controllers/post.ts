@@ -11,6 +11,7 @@ router
   .get('/overview/:id', PostService.getOverview)
   .get('/media/:id', PostService.getMedia)
   .get('/comments/:id', PostService.getComments)
+  .get('/recommend/:id', PostService.recommend)
   .post('/comments:id', newCommentValidation, PostService.addComment)
   .post('/like/:id', PostService.addLike)
   .delete('/like/:id', PostService.removeLike)

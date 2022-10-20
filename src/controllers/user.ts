@@ -1,20 +1,22 @@
-import express from 'express'
-import UserService from '../services/userService'
-import newUserValidation from '../middleware/createUserValidator'
-import userUpdateValidation from '../middleware/updateUserValidator'
+import express from "express";
+import UserService from "../services/userService";
+import newUserValidation from "../middleware/createUserValidator";
+import userUpdateValidation from "../middleware/updateUserValidator";
+import isOwner from "../middleware/isOwner";
+import isAdmin from "../middleware/isAdmin";
 
-const router = express.Router()
+const router = express.Router();
 
 router
   // .get("/passwords", UserService.setPasswords)
-  .post('/login', UserService.login)
-  .get('/profile/:id', UserService.getProfile)
-  .post('/follow/:id', UserService.follow)
-  .delete('/follow/:id', UserService.unFollow)
-  .get('/:id', UserService.getUser)
-  .put('/:id', userUpdateValidation, UserService.updateUser)
-  .delete('/:id', UserService.deleteUser)
-  .post('/', newUserValidation, UserService.addUser)
-  .get('/', UserService.getUsers)
+  .post("/login", UserService.login)
+  .get("/profile/:id", UserService.getProfile)
+  .post("/follow/:id", UserService.follow)
+  .delete("/follow/:id", UserService.unFollow)
+  .get("/:id", UserService.getUser)
+  .put("/:id", isOwner, userUpdateValidation, UserService.updateUser)
+  .delete("/:id", isOwner, UserService.deleteUser)
+  .post("/", newUserValidation, UserService.addUser)
+  .get("/", isAdmin, UserService.getUsers);
 
-export default module.exports = router
+export default module.exports = router;

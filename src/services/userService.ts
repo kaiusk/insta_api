@@ -93,9 +93,9 @@ const UserService = {
           "       MU.Name,\n" +
           "       MU.ProfileImageUrl,\n" +
           "       MU.Bio,\n" +
-          "       count(MP.ID)             as posts,\n" +
-          "       count(MF.FollowerUserID) as fallowers,\n" +
-          "       count(M.FollowerUserID)  as fallowees\n" +
+          "       count(distinct MP.ID)             as posts,\n" +
+          "       count(distinct MF.FollowerUserID) as fallowers,\n" +
+          "       count(distinct M.FollowerUserID)  as fallowees\n" +
           "from MI_User MU\n" +
           "         left join MI_Post MP on MU.ID = MP.UserID\n" +
           "         left join MI_Following MF on MU.ID = MF.FolloweeUserID\n" +
@@ -146,7 +146,7 @@ const UserService = {
       .then((hashedPassword) => {
         user.password = hashedPassword;
         MariaDB.query(
-          "insert into MI_User (Bio, GenderID, Username, Name, Email, Password) values (?,?,?,?,?,?)",
+          "insert into MI_User (Bio, GenderID, Username, Name, Email, Password, Role) values (?,?,?,?,?,?,?)",
           [
             user.bio,
             user.genderId,
@@ -154,6 +154,7 @@ const UserService = {
             user.name,
             user.email as string,
             user.password,
+            0,
           ]
         )
           .then((result: any) => {
@@ -186,11 +187,12 @@ const UserService = {
         bio: "",
         email: "",
         profileImageUrl: "",
+        role: 0,
       },
       req.body
     );
     MariaDB.query(
-      "update MI_User set Bio=?, GenderID=?, Name=?, Email=?, ProfileImageUrl=?, Website=? where ID=?",
+      "update MI_User set Bio=?, GenderID=?, Name=?, Email=?, ProfileImageUrl=?, Website=?, Role=? where ID=?",
       [
         setUser.bio,
         setUser.genderId,
@@ -198,6 +200,7 @@ const UserService = {
         setUser.email as string,
         setUser.profileImageUrl as string,
         setUser.website as string,
+        setUser.role,
         +req.params.id,
       ]
     )
@@ -261,9 +264,9 @@ const UserService = {
         "       MU.Name,\n" +
         "       MU.ProfileImageUrl,\n" +
         "       MU.Bio,\n" +
-        "       count(MP.ID)             as posts,\n" +
-        "       count(MF.FollowerUserID) as fallowers,\n" +
-        "       count(M.FollowerUserID)  as fallowees\n" +
+        "       count(distinct MP.ID)             as posts,\n" +
+        "       count(distinct MF.FollowerUserID) as followers,\n" +
+        "       count(distinct M.FollowerUserID)  as followees\n" +
         "from MI_User MU\n" +
         "         left join MI_Post MP on MU.ID = MP.UserID\n" +
         "         left join MI_Following MF on MU.ID = MF.FolloweeUserID\n" +
