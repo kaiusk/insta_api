@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { Request } from "express-jwt";
 
 /**
  * Middleware to check if user has certain roles.
@@ -7,7 +8,7 @@ import { NextFunction, Request, Response } from "express";
  * @param next
  */
 const isOwner = (req: Request, res: Response, next: NextFunction): void => {
-  if (req.auth?.data?.Role || req.params.id === req.auth.data.ID) next();
+  if (req.auth?.data?.Role || req.params.id === req.auth?.data.ID) next();
   else res.sendStatus(401);
 };
 

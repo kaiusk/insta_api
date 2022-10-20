@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { Request } from "express-jwt";
 
 /**
  * Middleware to check if user has certain roles.
