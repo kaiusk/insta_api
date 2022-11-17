@@ -8,7 +8,11 @@ import { Request } from "express-jwt";
  * @param next
  */
 const isOwner = (req: Request, res: Response, next: NextFunction): void => {
-  if (req.auth?.data?.Role || req.params.id === req.auth?.data.ID) next();
+  if (
+    req.auth?.data?.role ||
+    parseInt(req.params.id) === parseInt(req.auth?.data.id)
+  )
+    next();
   else res.sendStatus(401);
 };
 

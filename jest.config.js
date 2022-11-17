@@ -4,4 +4,6 @@ module.exports = {
   testRegex: "/tests/.*\\.(test|spec)?\\.(ts|tsx)$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   coveragePathIgnorePatterns: ["/node_modules/"],
+  testTimeout: 2000,
+  //globalSetup: "./test_setup.ts",
 };

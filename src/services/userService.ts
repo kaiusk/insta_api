@@ -1,79 +1,62 @@
 import MariaDB from "./mariaDBService";
 import PasswordService from "./passwordService";
 import { MIUser } from "../model/mi-user";
-import { Request, Response } from "express";
+import { Response } from "express";
+import { Request } from "express-jwt";
 import { StatusCodes } from "http-status-codes";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
 const UserService = {
   /**
-   * kasutajate list
-   * @param req
-   * @param res
-   */
-  getUsers(req: Request, res: Response) {
-    const take: number = req.query.take ? +req.query.take : 10;
-    const page: number = req.query.page ? +req.query.page : 1;
-    const offset = page * take;
-    MariaDB.query(
-      `select *
-             from MI_User
-             limit ${offset}, ${take}`
-    )
-      .then((result: any) => {
-        res.status(StatusCodes.OK).json(result);
-      })
-      .catch(() => {
-        res
-          .status(StatusCodes.FORBIDDEN)
-          .json({ message: "invalid credentials" });
-      });
-  },
-
-  /**
    * kasutaja sisse logimine
    * @param req
    * @param res
    */
-  login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     const { username, password } = req.body;
     if (username && password) {
-      MariaDB.query("select * from MI_User where Username=?", [username])
-        .then((u: string | any[]) => {
-          if (!u.length) {
-            res
-              .status(StatusCodes.FORBIDDEN)
-              .json({ message: "invalid credentials" });
-          } else {
-            PasswordService.compare(u[0].Password, password)
-              .then((correct) => {
-                if (correct) {
-                  delete u[0].Password;
-                  const token = jwt.sign(
-                    {
-                      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                      data: u[0],
-                    },
-                    process.env.JWT_SECRET ?? "secret"
-                  );
-                  res
-                    .status(StatusCodes.OK)
-                    .json({ message: "success", token });
-                } else {
-                  res
-                    .status(StatusCodes.FORBIDDEN)
-                    .json({ message: "invalid credentials" });
-                }
-              })
-              .catch(() => {});
-          }
-        })
-        .catch(() => {
+      try {
+        const user = await MariaDB.query(
+          `select MU.id,
+                            MU.username,
+                            MU.name,
+                            MU.profileImageUrl,
+                            MU.bio,
+                            MU.password,
+                            MU.role,
+                            (select count(*) from MI_Post MP where MP.userId = MU.id)              as posts,
+                            (select count(*) from MI_Liking ML where ML.userId = MU.id)            as likes,
+                            (select count(*) from MI_Following MF where MF.followerUserId = MU.id) as following,
+                            (select count(*) from MI_Following MF where MF.followeeUserId = MU.id) as followers,
+                            (select count(*) from MI_Comment MC where MC.userId = MU.id)           as comments,
+                            0                                                                      as follow
+                     from MI_User MU
+                     where MU.username = ?
+                     group by MU.id`,
+          [username]
+        );
+        const valid = await PasswordService.compare(user[0].password, password);
+        if (valid) {
+          delete user[0].password;
+          const token = jwt.sign(
+            {
+              exp: Math.floor(Date.now() / 1000) + 60 * 60,
+              data: user[0],
+            },
+            process.env.JWT_SECRET ?? "secret"
+          );
+          res.status(StatusCodes.OK).json({ message: "success", token });
+        } else {
           res
             .status(StatusCodes.FORBIDDEN)
             .json({ message: "invalid credentials" });
-        });
+        }
+      } catch (e) {
+        res
+          .status(StatusCodes.FORBIDDEN)
+          .json({ message: "invalid credentials" });
+      }
     } else {
       res
         .status(StatusCodes.FORBIDDEN)
@@ -89,26 +72,35 @@ const UserService = {
   getUser(req: Request, res: Response) {
     if (+req.params.id) {
       MariaDB.query(
-        "select MU.Username,\n" +
-          "       MU.Name,\n" +
-          "       MU.ProfileImageUrl,\n" +
-          "       MU.Bio,\n" +
-          "       count(distinct MP.ID)             as posts,\n" +
-          "       count(distinct MF.FollowerUserID) as fallowers,\n" +
-          "       count(distinct M.FollowerUserID)  as fallowees\n" +
-          "from MI_User MU\n" +
-          "         left join MI_Post MP on MU.ID = MP.UserID\n" +
-          "         left join MI_Following MF on MU.ID = MF.FolloweeUserID\n" +
-          "         left join MI_Following M on MU.ID = M.FollowerUserID\n" +
-          "where MU.ID = ?\n" +
-          "group by MU.ID",
-        [+req.params.id]
+        `select MU.id,
+                        MU.username,
+                        MU.name,
+                        MU.profileImageUrl,
+                        MU.bio,
+                        (select count(*) from MI_Post MP where MP.userId = MU.id)              as posts,
+                        (select count(*) from MI_Liking ML where ML.userId = MU.id)            as likes,
+                        (select count(*) from MI_Following MF where MF.followerUserId = MU.id) as following,
+                        (select count(*) from MI_Following MF where MF.followeeUserId = MU.id) as followers,
+                        (select count(*) from MI_Comment MC where MC.userId = MU.id)           as comments,
+                        (select count(*)
+                         from MI_Following MF
+                         where MF.followeeUserId = MU.id
+                           and MF.followerUserId = ?)                                          as follow
+                 from MI_User MU
+                 where MU.id = ?
+                 group by MU.id`,
+        [+req.params.id, +req.params.id]
       )
         .then((row: any[]) => {
-          res.status(StatusCodes.OK).json(row[0]);
+          if (!row.length) {
+            res
+              .status(StatusCodes.NOT_FOUND)
+              .json({ message: "user not found" });
+          } else {
+            res.status(StatusCodes.OK).json(row[0]);
+          }
         })
         .catch((e: any) => {
-          console.log(e);
           res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
         });
     } else {
@@ -122,7 +114,12 @@ const UserService = {
    * @param res
    */
   deleteUser(req: Request, res: Response) {
-    MariaDB.query("delete from MI_User where ID=?", [+req.params.id])
+    MariaDB.query(
+      `delete
+             from MI_User
+             where id = ?`,
+      [+req.params.id]
+    )
       .then((result: any) => {
         res.status(StatusCodes.OK).json({
           success: true,
@@ -146,7 +143,8 @@ const UserService = {
       .then((hashedPassword) => {
         user.password = hashedPassword;
         MariaDB.query(
-          "insert into MI_User (Bio, GenderID, Username, Name, Email, Password, Role) values (?,?,?,?,?,?,?)",
+          `insert into MI_User (bio, genderId, username, name, email, password, role)
+                     values (?, ?, ?, ?, ?, ?, ?)`,
           [
             user.bio,
             user.genderId,
@@ -192,7 +190,15 @@ const UserService = {
       req.body
     );
     MariaDB.query(
-      "update MI_User set Bio=?, GenderID=?, Name=?, Email=?, ProfileImageUrl=?, Website=?, Role=? where ID=?",
+      `update MI_User
+             set bio=?,
+                 genderId=?,
+                 name=?,
+                 email=?,
+                 profileImageUrl=?,
+                 website=?,
+                 role=?
+             where id = ?`,
       [
         setUser.bio,
         setUser.genderId,
@@ -205,7 +211,31 @@ const UserService = {
       ]
     )
       .then((result: any) => {
-        res.status(StatusCodes.OK).json({ success: true, data: result });
+        MariaDB.query(
+          `select MU.id,
+                            MU.username,
+                            MU.name,
+                            MU.profileImageUrl,
+                            MU.bio,
+                            (select count(id) from MI_Post MP where MP.userId = MU.id)   as posts,
+                            (select count(*)
+                             from MI_Following MF
+                             where MF.followerUserId = MU.id)                            as following,
+                            (select count(*)
+                             from MI_Following MF
+                             where MF.followeeUserId = MU.id)                            as followers,
+                            (select count(*) from MI_Comment MC where MC.userId = MU.id) as comments,
+                            (select count(*)
+                             from MI_Following MF
+                             where MF.followeeUserId = MU.id
+                               and MF.followerUserId = ?)                                as follow
+                     from MI_User MU
+                     where MU.id = ?`,
+          [+req.auth?.data.id, +req.params.id]
+        ).then((data: any) => {
+          res.status(StatusCodes.OK).json(data[0]);
+        });
+        //res.status(StatusCodes.OK).json({ success: true, data: result });
       })
       .catch(() => {
         res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
@@ -213,13 +243,13 @@ const UserService = {
   },
 
   follow(req: Request, res: Response) {
-    // @ts-expect-error
-    const followerId = req.auth?.data.ID; // get followerID from jwt token
+    const followerId = req.auth?.data.id; // get followerid from jwt token
     const followeeId = req.params.id;
     if (followerId && followeeId) {
       MariaDB.query(
-        "insert into MI_Following (FollowerUserID, FolloweeUserID) VALUES (?,?)",
-        [followerId, followeeId]
+        `insert into MI_Following (followerUserId, followeeUserId)
+                 VALUES (?, ?)`,
+        [+followerId, +followeeId]
       )
         .then((result: any) => {
           res.status(StatusCodes.OK).json({
@@ -228,7 +258,7 @@ const UserService = {
           });
         })
         .catch((errors: { array: () => any }) => {
-          res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+          res.status(StatusCodes.BAD_REQUEST).json({ errors });
         });
     } else {
       res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
@@ -236,13 +266,15 @@ const UserService = {
   },
 
   unFollow(req: Request, res: Response) {
-    // @ts-expect-error
-    const followerId = req.auth?.data.ID; // get followerID from jwt token
+    const followerId = req.auth?.data.id; // get followerid from jwt token
     const followeeId = req.params.id;
-    if (followerId.length && followeeId.length) {
+    if (followerId && followeeId) {
       MariaDB.query(
-        "delete from MI_Following where FollowerUserID=? and FolloweeUserID=?",
-        [followerId, followeeId]
+        `delete
+                 from MI_Following
+                 where followerUserId = ?
+                   and followeeUserId = ?`,
+        [+followerId, +followeeId]
       )
         .then((result: any) => {
           res.status(StatusCodes.OK).json({
@@ -251,62 +283,42 @@ const UserService = {
           });
         })
         .catch((errors: { array: () => any }) => {
-          res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+          res.status(StatusCodes.BAD_REQUEST).json({ errors });
         });
     } else {
       res.status(StatusCodes.BAD_REQUEST).json({ errors: "missing arguments" });
     }
   },
 
-  getProfile(req: Request, res: Response) {
+  userProfile(req: Request, res: Response) {
     MariaDB.query(
-      "select MU.Username,\n" +
-        "       MU.Name,\n" +
-        "       MU.ProfileImageUrl,\n" +
-        "       MU.Bio,\n" +
-        "       count(distinct MP.ID)             as posts,\n" +
-        "       count(distinct MF.FollowerUserID) as followers,\n" +
-        "       count(distinct M.FollowerUserID)  as followees\n" +
-        "from MI_User MU\n" +
-        "         left join MI_Post MP on MU.ID = MP.UserID\n" +
-        "         left join MI_Following MF on MU.ID = MF.FolloweeUserID\n" +
-        "         left join MI_Following M on MU.ID = M.FollowerUserID\n" +
-        "where MU.ID = ?\n" +
-        "group by MU.ID",
-      [+req.params.id]
+      `select MU.id,
+                    MU.username,
+                    MU.name,
+                    MU.profileImageUrl,
+                    MU.bio,
+                    (select count(id) from MI_Post MP where MP.userId = MU.id)   as posts,
+                    (select count(*)
+                     from MI_Following MF
+                     where MF.followerUserId = MU.id)                            as following,
+                    (select count(*)
+                     from MI_Following MF
+                     where MF.followeeUserId = MU.id)                            as followers,
+                    (select count(*) from MI_Comment MC where MC.userId = MU.id) as comments,
+                    (select count(*)
+                     from MI_Following MF
+                     where MF.followeeUserId = MU.id
+                       and MF.followerUserId = ?)                                as follow
+             from MI_User MU
+             where MU.id = ?`,
+      [+req.auth?.data.id, +req.params.id]
     )
       .then((data: any) => {
-        res.status(StatusCodes.OK).json(data);
+        res.status(StatusCodes.OK).json(data[0]);
       })
-      .catch(() => {
-        res.status(StatusCodes.NOT_FOUND).json({ message: "user not found" });
+      .catch((errors: any) => {
+        res.status(StatusCodes.BAD_REQUEST).json({ errors });
       });
-  },
-
-  /**
-   * set all users same password (testing only!!!)
-   * @param req
-   * @param res
-   */
-  setPasswords(req: Request, res: Response) {
-    MariaDB.query("select ID from MI_User")
-      .then((data: any[]) => {
-        data.forEach((id: any) => {
-          PasswordService.toHash("test")
-            .then(async (hashedPassword) => {
-              MariaDB.query("update MI_User set Password=? where ID=?", [
-                hashedPassword,
-                id.ID,
-              ])
-                .then((_: any) => {
-                  console.log(id.ID, "updated");
-                })
-                .catch(() => {});
-            })
-            .catch(() => {});
-        });
-      })
-      .catch(() => {});
   },
 };
 

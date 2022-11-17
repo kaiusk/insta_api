@@ -48,15 +48,30 @@ const StatService = {
   },
   getStats(req: Request, res: Response) {
     MariaDB.query(
-      "select count(MP.ID)                                                                              as posts,\n" +
-        "       (select count(MU.ID) from MI_User MU)                                                     as users,\n" +
-        "       (select count(MP2.ID) / count(distinct MP2.UserID) from MI_Post MP2)                      as avgPosts,\n" +
-        "       (select count(MP2.ID) from MI_Post MP2 group by MP2.UserID order by 1 desc limit 1)       as maxPosts,\n" +
-        "       (select count(MC2.ID) / count(distinct MC2.PostID) from MI_Comment MC2)                   as avgComments,\n" +
-        "       (select count(MC2.ID) from MI_Comment MC2 group by MC2.PostID order by 1 desc limit 1)    as maxComments,\n" +
-        "       (select count(ML2.PostID) / count(distinct ML2.PostID) from MI_Liking ML2)                as avgLikes,\n" +
-        "       (select count(ML2.UserID) from MI_Liking ML2 group by ML2.PostID order by 1 desc limit 1) as maxLikes\n" +
-        "from MI_Post MP"
+      `select count(MP.ID)                          as posts,
+                    (select count(MU.ID) from MI_User MU) as users,
+                    (select count(MP2.ID) / count(distinct MP2.UserID)
+                     from MI_Post MP2)                    as avgPosts,
+                    (select count(MP2.ID)
+                     from MI_Post MP2
+                     group by MP2.UserID
+                     order by 1 desc
+                     limit 1)                             as maxPosts,
+                    (select count(MC2.ID) / count(distinct MC2.PostID)
+                     from MI_Comment MC2)                 as avgComments,
+                    (select count(MC2.ID)
+                     from MI_Comment MC2
+                     group by MC2.PostID
+                     order by 1 desc
+                     limit 1)                             as maxComments,
+                    (select count(ML2.PostID) / count(distinct ML2.PostID)
+                     from MI_Liking ML2)                  as avgLikes,
+                    (select count(ML2.UserID)
+                     from MI_Liking ML2
+                     group by ML2.PostID
+                     order by 1 desc
+                     limit 1)                             as maxLikes
+             from MI_Post MP`
     )
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows[0]);

@@ -10,6 +10,8 @@ const pool = MariaDBService.createPool({
   database: process.env.DB_DATABASE,
   connectionLimit: 5,
   bigIntAsNumber: true,
+  insertIdAsNumber: true,
+  multipleStatements: true,
 });
 
 const MariaDB = {
@@ -18,6 +20,15 @@ const MariaDB = {
     try {
       conn = await pool.getConnection();
       return await conn.query(sql, params).finally(() => {});
+    } finally {
+      if (conn) conn.release().finally(() => {}); // release to pool
+    }
+  },
+  batch: async (sql: string, params?: any[]) => {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      return await conn.batch(sql, params).finally(() => {});
     } finally {
       if (conn) conn.release().finally(() => {}); // release to pool
     }

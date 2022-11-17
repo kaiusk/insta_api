@@ -12,15 +12,11 @@ const PasswordService = {
   },
 
   compare: async (storedPassword: string, suppliedPassword: string) => {
-    try {
-      const [hashedPassword, salt] = storedPassword.split(".");
-      // we hash the new sign-in password
-      const buf = (await scryptAsync(suppliedPassword, salt, 64)) as Buffer;
-      // compare the new supplied password with the stored hashed password
-      return buf.toString("hex") === hashedPassword;
-    } catch (e) {
-      return false;
-    }
+    const [hashedPassword, salt] = storedPassword.split(".");
+    // we hash the new sign-in password
+    const buf = (await scryptAsync(suppliedPassword, salt, 64)) as Buffer;
+    // compare the new supplied password with the stored hashed password
+    return buf.toString("hex") === hashedPassword;
   },
 };
 

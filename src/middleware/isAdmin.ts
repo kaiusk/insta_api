@@ -8,7 +8,7 @@ import { Request } from "express-jwt";
  * @param next
  */
 const isAdmin = (req: Request, res: Response, next: NextFunction): void => {
-  if (!req.auth?.data.Role) res.sendStatus(401);
+  if (!req.auth?.data.role) res.sendStatus(401);
   else next();
 };
 
