@@ -11,6 +11,7 @@ it("should login user", async () => {
   expect(res.statusCode).toEqual(200);
   expect(res.body).toHaveProperty("token");
 });
+
 it("should not login user", async () => {
   const res = await request.post("/api/v1/users/login").send({
     username: "sigrimigri",
@@ -20,6 +21,7 @@ it("should not login user", async () => {
   expect(res.body).toHaveProperty("message");
   expect(res.body.message).toBe("invalid credentials");
 });
+
 it("should not login user (empty data)", async () => {
   const res = await request.post("/api/v1/users/login").send();
   expect(res.statusCode).toEqual(403);

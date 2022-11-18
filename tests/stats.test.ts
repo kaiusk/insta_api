@@ -19,7 +19,7 @@ it("should get top users", async () => {
     .set("Authorization", `Bearer ${token}`)
     .send();
   expect(res.statusCode).toEqual(200);
-  //expect(JSON.parse(res.body)).toHaveProperty("id");
+  expect(res.body).toBeInstanceOf(Array);
 });
 
 it("should get genders", async () => {
@@ -28,7 +28,7 @@ it("should get genders", async () => {
     .set("Authorization", `Bearer ${token}`)
     .send();
   expect(res.statusCode).toEqual(200);
-  //expect(JSON.parse(res.body)).toHaveProperty("id");
+  expect(res.body).toBeInstanceOf(Array);
 });
 
 it("should get users by added date", async () => {
@@ -37,7 +37,7 @@ it("should get users by added date", async () => {
     .set("Authorization", `Bearer ${token}`)
     .send();
   expect(res.statusCode).toEqual(200);
-  //expect(JSON.parse(res.body)).toHaveProperty("id");
+  expect(res.body).toBeInstanceOf(Array);
 });
 
 it("should get stats", async () => {
@@ -46,7 +46,7 @@ it("should get stats", async () => {
     .set("Authorization", `Bearer ${token}`)
     .send();
   expect(res.statusCode).toEqual(200);
-  //expect(JSON.parse(res.body)).toHaveProperty("id");
+  expect(res.body).toBeInstanceOf(Object);
 });
 
 it("should not have an access", async () => {

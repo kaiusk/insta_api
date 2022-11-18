@@ -20,6 +20,7 @@ it("should get profile", async () => {
     .send();
   expect(res.statusCode).toEqual(200);
 });
+
 it("should not get profile", async () => {
   const res = await request
     .get("/api/v1/users/-20")
@@ -29,6 +30,7 @@ it("should not get profile", async () => {
   expect(res.body).toHaveProperty("message");
   expect(res.body.message).toBe("user not found");
 });
+
 it("should get user", async () => {
   const res = await request
     .get("/api/v1/users/1")
@@ -36,6 +38,7 @@ it("should get user", async () => {
     .send();
   expect(res.statusCode).toEqual(200);
 });
+
 it("should follow user", async () => {
   const res = await request
     .post("/api/v1/users/follow/2")
@@ -43,6 +46,7 @@ it("should follow user", async () => {
     .send();
   expect(res.statusCode).toEqual(200);
 });
+
 it("should unfollow user", async () => {
   const res = await request
     .delete("/api/v1/users/follow/2")
@@ -50,12 +54,14 @@ it("should unfollow user", async () => {
     .send();
   expect(res.statusCode).toEqual(200);
 });
+
 it("should update user", async () => {
   const res = await request
     .put("/api/v1/users/201")
     .set("Authorization", `Bearer ${token}`)
     .send({
       bio: "updated",
+      role: 1,
     });
   expect(res.statusCode).toEqual(200);
 });
