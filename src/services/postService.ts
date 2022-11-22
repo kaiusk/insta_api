@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { validationResult } from "express-validator";
 
 const PostService = {
-  // single post
+  // ühe postituse andmed
   getPost(req: Request, res: Response): void {
     if (+req.params.id) {
       MariaDB.query(
@@ -49,7 +49,7 @@ const PostService = {
     }
   },
 
-  // posts made by my followed users
+  // minu poolt jägitavatate kasutajate postitused
   getOverview(req: Request, res: Response): void {
     MariaDB.query(
       `
@@ -172,6 +172,7 @@ const PostService = {
       });
   },
 
+  // postitused mis on tehtud minu poolt jägitavate kasutajate jälgitavate poolt (mina -> follow -> follow)
   recommend(req: Request, res: Response): void {
     MariaDB.query(
       `select MP.id                                                        as postId,
@@ -212,6 +213,7 @@ const PostService = {
       });
   },
 
+  // ühe kasutaja postitused
   userPosts(req: Request, res: Response): void {
     MariaDB.query(
       `select MP.id                                                        as postId,

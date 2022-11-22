@@ -5,45 +5,45 @@ import { StatusCodes } from "http-status-codes";
 const StatService = {
   getTopUsers(req: Request, res: Response) {
     MariaDB.query(
-      "select MU.Username, MU.Name, count(MF.FollowerUserID) as fallowers\n" +
-        "from MI_Following MF\n" +
-        "         join MI_User MU on MU.ID = MF.FolloweeUserID\n" +
-        "group by MF.FolloweeUserID\n" +
-        "order by fallowers desc\n" +
-        "limit 10"
+      `select MU.Username, MU.Name, count(MF.FollowerUserID) as fallowers
+             from MI_Following MF
+                      join MI_User MU on MU.ID = MF.FolloweeUserID
+             group by MF.FolloweeUserID
+             order by fallowers desc
+             limit 10`
     )
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
       .catch((e) => {
-        res.status(StatusCodes.NOT_FOUND).json({ message: "post not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "data not found" });
       });
   },
   getGenders(req: Request, res: Response) {
     MariaDB.query(
-      "select MG.Name as gender, count(MU.ID) as users\n" +
-        "from MI_User MU\n" +
-        "         join MI_Gender MG on MG.ID = MU.GenderID\n" +
-        "group by MU.GenderID"
+      `select MG.Name as gender, count(MU.ID) as users
+             from MI_User MU
+                      join MI_Gender MG on MG.ID = MU.GenderID
+             group by MU.GenderID`
     )
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
       .catch((e) => {
-        res.status(StatusCodes.NOT_FOUND).json({ message: "post not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "data not found" });
       });
   },
   getUsersAdded(req: Request, res: Response) {
     MariaDB.query(
-      "select date(MU.CreationTime) as date, count(MU.ID) as users\n" +
-        "from MI_User MU\n" +
-        "group by 1"
+      `select date(MU.CreationTime) as date, count(MU.ID) as users
+             from MI_User MU
+             group by 1`
     )
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
       .catch((e) => {
-        res.status(StatusCodes.NOT_FOUND).json({ message: "post not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "data not found" });
       });
   },
   getStats(req: Request, res: Response) {
@@ -77,7 +77,7 @@ const StatService = {
         res.status(StatusCodes.OK).json(rows[0]);
       })
       .catch((e) => {
-        res.status(StatusCodes.NOT_FOUND).json({ message: "post not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "data not found" });
       });
   },
 };

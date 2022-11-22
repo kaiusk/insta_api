@@ -12,8 +12,7 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 2. `/controllers` - iga funktsionaalsuse/route jaoks oma fail
 3. `/services` - iga funktsionaalsuse jaoks oma fail
 4. `/middleware` - siin hoitakse erinevaid middleware faile
-5. `/model` - andmetüüpide kirjeldused
-6. `.env` - konfiguratsiooni fail
+5. `.env` - konfiguratsiooni fail
 
 ### Seadistamine
 
@@ -33,7 +32,7 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 
 ## API endpoints
 
-### User
+### Users
 
 1. `POST /users/login` logib sisse - ok
 2. `GET /users/:id` kasutaja profiil - ok
@@ -43,25 +42,23 @@ TLÜ Haapsalu Kolledži "Programmeerimine II" raames loodud projekt
 6. `POST /users/follow/:id` kasutaja jälgima hakkamine
 7. `DELETE /users/follow/:id` lõpeta kasutaja jälgimine
 
-### Post
+### Posts
 
-1. `GET /posts/:id` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
-2. `GET /posts/overview/:id` postitus, koos ühe meedia faili ja postitusega seotud kogu meedia failide arvuga
-3. `GET /posts/header/:id` postituse päis: kasutajanimi, profiili pilt, meeldimiste arv
-4. `GET /posts/media/:id` postituse meedia failid
-5. `GET /posts/comments/:id` postituse meedia failid
-6. `POST /posts/comments/:id` lisa kommentaar
-7. `POST /posts/like/:id` lisa like
-8. `POST /posts/media/:id` lisa meedia postitusele
-9. `POST /posts/:id` lisa postitus
-10. `DELETE /posts/:id` kustuta postitus
+1. `GET /posts/overview` kasutaja poolt jälgitavate kasutajate poolt tehtud postitused
+2. `GET /posts/recommend` soovita postitusi (jälgitavate jälgitavad)
+3. `POST /posts/like/:id` lisa like
+4. `DELETE /posts/like/:id` kustuts like
+5. `POST /posts/` lisa postitus koos meediaga
+6. `GET /posts/user/:id` ühe kasutaja postitused
+7. `GET /posts/:id` üks postitus
+8. `DELETE /posts/:id` kustuta postitus
 
 ### Stats
 
 1. `GET /stats/` Analüütilised andmed
-2. `GET /stats/top-users` Top 10 kasutajat kõige rohkemate jälgijatega
-3. `GET /stats/users-added` Kasutajaks registreerumised kuupäevade kaupa
-4. `GET /stats/users-gender` Kasutajate jagunemine soo järgi
+2. `GET /stats/topusers` Top 10 kasutajat kõige rohkemate jälgijatega
+3. `GET /stats/users` Kasutajaks registreerumised kuupäevade kaupa
+4. `GET /stats/genders` Kasutajate jagunemine soo järgi
 
 <!-- CONTACT -->
 
