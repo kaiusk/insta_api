@@ -3,12 +3,11 @@ import express from "express";
 import { expressjwt } from "express-jwt";
 import cors from "cors";
 import logger from "morgan";
-import apiCache from "apicache";
-import * as redis from "redis";
 import userRoutes from "./controllers/user";
 import postRoutes from "./controllers/post";
 import statRoutes from "./controllers/stat";
 import AuthErrorHandler from "./middleware/authErrorHandler";
+import cacheWithRedis from "./middleware/cacheWithRedis";
 
 dotenv.config();
 
@@ -22,12 +21,6 @@ app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
 
-/*const cacheWithRedis = apiCache.options({
-  redisClient: redis.createClient(),
-}).middleware;
-
-app.use(cacheWithRedis("5 minutes"));*/
-
 app.use(
   expressjwt({
     secret: process.env.JWT_SECRET ?? "secret",
@@ -36,6 +29,8 @@ app.use(
     path: [basePath + "/users/login"],
   })
 );
+
+app.use(cacheWithRedis("5 minutes"));
 
 app.use(AuthErrorHandler);
 app.use(basePath + "/users", userRoutes);
