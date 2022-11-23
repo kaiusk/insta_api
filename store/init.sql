@@ -8424,4 +8424,128 @@ VALUES (499, 160, '2022-09-16 17:20:16');
 INSERT INTO MI_Liking (postId, userId, creationTime)
 VALUES (500, 33, '2022-09-16 17:20:20');
 
+-- protseduurid
 
+DELIMITER $$
+CREATE
+    DEFINER = `root`@`%` PROCEDURE `Recommend`(IN `UID` INT UNSIGNED)
+    READS SQL DATA
+BEGIN
+    select MP.id                                                        as postId,
+           MP.locationName,
+           MP.location,
+           MP.creationTime,
+           MU.username,
+           MU.id                                                        as userId,
+           MU.profileImageUrl,
+           (select count(*) from MI_Liking ML where ML.postId = MP.id)  as likes,
+           (select count(*) from MI_Comment MC where MC.postId = MP.id) as comments,
+           (select mediaFileUrl
+            from MI_PostMedia MPM
+            where MPM.postId = MP.id
+            order by MPM.id desc
+            limit 1)                                                    as file,
+           if((select postId from MI_Liking where postId = MP.id and userId = UID), true,
+              false)                                                    as liking,
+           (select count(mediaFileUrl)
+            from MI_PostMedia MPM
+            where MPM.postId = MP.id)                                   as files
+    from MI_Post MP
+             join MI_User MU on MU.id = MP.userId
+    where userId in (select followeeuserId
+                     from MI_Following
+                     where followeruserId in
+                           (select followeeuserId from MI_Following where followeruserId = UID)
+                       and followeeuserId <> UID)
+    order by rand()
+    limit 24;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE
+    DEFINER = `root`@`%` PROCEDURE `GetPost`(IN `PId` INT, IN `UId` INT)
+BEGIN
+    select MP.id                                                                                 as postId,
+           MP.locationName,
+           MP.location,
+           MP.creationTime,
+           MU.username,
+           MU.id                                                                                 as userId,
+           MU.profileImageUrl,
+           (select count(*) from MI_Liking ML where ML.postId = MP.id)                           as likes,
+           (select count(*) from MI_Comment MC where MC.postId = MP.id)                          as comments,
+           if((select postId from MI_Liking where postId = MP.id and userId = UId), true, false) as liking
+    from MI_Post MP
+             join MI_User MU on MU.id = MP.userId
+    where MP.id = PId
+    order by MP.creationTime desc;
+
+    select MPM.id, MPM.mediaFileUrl, MPM.mediaTypeID
+    from MI_PostMedia MPM
+             join MI_MediaType MMT on MMT.id = MPM.mediaTypeID
+    where MPM.postId = PId;
+
+    select MC.id, MC.comment, MC.creationTime, MU.name
+    from MI_Comment MC
+             join MI_User MU on MU.id = MC.userId
+    where MC.postId = PId;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE
+    DEFINER = `root`@`%` PROCEDURE `Overview`(IN `UID` INT)
+BEGIN
+    select MP.id                                                                                 as postId,
+           MP.creationTime,
+           MP.locationName,
+           MU.Id                                                                                 as userId,
+           MU.username,
+           MU.profileImageUrl,
+           (select count(*) from MI_Liking ML where ML.postId = MP.id)                           as likes,
+           (select count(*) from MI_Comment MC where MC.postId = MP.id)                          as comments,
+           (select MediaFileUrl
+            from MI_PostMedia MPM
+            where MPM.postId = MP.id
+            order by MPM.id desc
+            limit 1)                                                                             as file,
+           if((select postId from MI_Liking where postId = MP.id and userId = UID), true, false) as liking,
+           (select count(MediaFileUrl) from MI_PostMedia MPM where MPM.postId = MP.id)           as files
+    from MI_Following MF
+             join MI_Post MP on MF.followeeuserId = MP.userId
+             join MI_User MU on MU.id = MP.userId
+
+    where MF.followerUserId = UID
+    group by MP.id, MP.creationTime
+    order by MP.creationTime desc;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE
+    DEFINER = `root`@`%` PROCEDURE `GetUserPosts`(IN `UID` INT, IN `LoginID` INT)
+BEGIN
+    select MP.id                                                        as postId,
+           MP.locationName,
+           MP.creationTime,
+           MU.username,
+           MU.id                                                        as userId,
+           MU.profileImageUrl,
+           (select count(*) from MI_Liking ML where ML.postId = MP.id)  as likes,
+           (select count(*) from MI_Comment MC where MC.postId = MP.id) as comments,
+           (select mediaFileUrl
+            from MI_PostMedia MPM
+            where MPM.postId = MP.id
+            order by MPM.id desc
+            limit 1)                                                    as file,
+           (select count(mediaFileUrl)
+            from MI_PostMedia MPM
+            where MPM.postId = MP.id)                                   as files,
+           if((select postId from MI_Liking where postId = MP.id and userId = LoginID), true,
+              false)                                                    as liking
+    from MI_Post MP
+             join MI_User MU on MU.id = MP.userId
+    where userId = UID;
+END$$
+DELIMITER ;

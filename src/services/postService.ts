@@ -8,35 +8,7 @@ const PostService = {
   // ühe postituse andmed
   getPost(req: Request, res: Response): void {
     if (+req.params.id) {
-      MariaDB.query(
-        `
-                    select MP.id                                                                               as postId,
-                           MP.locationName,
-                           MP.location,
-                           MP.creationTime,
-                           MU.username,
-                           MU.id                                                                               as userId,
-                           MU.profileImageUrl,
-                           (select count(*) from MI_Liking ML where ML.postId = MP.id)                         as likes,
-                           (select count(*) from MI_Comment MC where MC.postId = MP.id)                        as comments,
-                           if((select postId from MI_Liking where postId = MP.id and userId = ?), true, false) as liking
-                    from MI_Post MP
-                             join MI_User MU on MU.id = MP.userId
-                    where MP.id = ?
-                    order by MP.creationTime desc;
-
-                    select MPM.id, MPM.mediaFileUrl, MPM.mediaTypeID
-                    from MI_PostMedia MPM
-                             join MI_MediaType MMT on MMT.id = MPM.mediaTypeID
-                    where MPM.postId = ?;
-
-                    select MC.id, MC.comment, MC.creationTime, MU.name
-                    from MI_Comment MC
-                             join MI_User MU on MU.id = MC.userId
-                    where MC.postId = ?;
-                `,
-        [+req.auth?.data.id, +req.params.id, +req.params.id, +req.params.id]
-      )
+      MariaDB.query(`CALL GetPost(?, ?)`, [+req.params.id, +req.auth?.data.id])
         .then((rows) => {
           const response = { ...rows[0][0], media: rows[1], comments: rows[2] };
           res.status(StatusCodes.OK).json(response);
@@ -51,32 +23,7 @@ const PostService = {
 
   // minu poolt jägitavatate kasutajate postitused
   getOverview(req: Request, res: Response): void {
-    MariaDB.query(
-      `
-                select MP.id                                                                               as postId,
-                       MP.creationTime,
-                       MP.locationName,
-                       MU.Id                                                                               as userId,
-                       MU.username,
-                       MU.profileImageUrl,
-                       (select count(*) from MI_Liking ML where ML.postId = MP.id)                         as likes,
-                       (select count(*) from MI_Comment MC where MC.postId = MP.id)                        as comments,
-                       (select MediaFileUrl
-                        from MI_PostMedia MPM
-                        where MPM.postId = MP.id
-                        order by MPM.id desc
-                        limit 1)                                                                           as file,
-                       if((select postId from MI_Liking where postId = MP.id and userId = ?), true, false) as liking,
-                       (select count(MediaFileUrl) from MI_PostMedia MPM where MPM.postId = MP.id)         as files
-                from MI_Following MF
-                         join MI_Post MP on MF.followeeuserId = MP.userId
-                         join MI_User MU on MU.id = MP.userId
-
-                where MF.followerUserId = ?
-                group by MP.id, MP.creationTime
-                order by MP.creationTime desc`,
-      [+req.auth?.data.id, +req.auth?.data.id]
-    )
+    MariaDB.query(`CALL Overview(?)`, [+req.auth?.data.id])
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
@@ -174,37 +121,7 @@ const PostService = {
 
   // postitused mis on tehtud minu poolt jägitavate kasutajate jälgitavate poolt (mina -> follow -> follow)
   recommend(req: Request, res: Response): void {
-    MariaDB.query(
-      `select MP.id                                                        as postId,
-                    MP.locationName,
-                    MP.location,
-                    MP.creationTime,
-                    MU.username,
-                    MU.id                                                        as userId,
-                    MU.profileImageUrl,
-                    (select count(*) from MI_Liking ML where ML.postId = MP.id)  as likes,
-                    (select count(*) from MI_Comment MC where MC.postId = MP.id) as comments,
-                    (select mediaFileUrl
-                     from MI_PostMedia MPM
-                     where MPM.postId = MP.id
-                     order by MPM.id desc
-                     limit 1)                                                    as file,
-                    if((select postId from MI_Liking where postId = MP.id and userId = ?), true,
-                       false)                                                    as liking,
-                    (select count(mediaFileUrl)
-                     from MI_PostMedia MPM
-                     where MPM.postId = MP.id)                                   as files
-             from MI_Post MP
-                      join MI_User MU on MU.id = MP.userId
-             where userId in (select followeeuserId
-                              from MI_Following
-                              where followeruserId in
-                                    (select followeeuserId from MI_Following where followeruserId = 107)
-                                and followeeuserId <> ?)
-             order by rand()
-             limit 24`,
-      [+req.auth?.data.id, +req.auth?.data.id]
-    )
+    MariaDB.query(`call Recommend(?)`, [+req.auth?.data.id])
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
@@ -215,30 +132,10 @@ const PostService = {
 
   // ühe kasutaja postitused
   userPosts(req: Request, res: Response): void {
-    MariaDB.query(
-      `select MP.id                                                        as postId,
-                    MP.locationName,
-                    MP.creationTime,
-                    MU.username,
-                    MU.id                                                        as userId,
-                    MU.profileImageUrl,
-                    (select count(*) from MI_Liking ML where ML.postId = MP.id)  as likes,
-                    (select count(*) from MI_Comment MC where MC.postId = MP.id) as comments,
-                    (select mediaFileUrl
-                     from MI_PostMedia MPM
-                     where MPM.postId = MP.id
-                     order by MPM.id desc
-                     limit 1)                                                    as file,
-                    (select count(mediaFileUrl)
-                     from MI_PostMedia MPM
-                     where MPM.postId = MP.id)                                   as files,
-                    if((select postId from MI_Liking where postId = MP.id and userId = ?), true,
-                       false)                                                    as liking
-             from MI_Post MP
-                      join MI_User MU on MU.id = MP.userId
-             where userId = ?`,
-      [+req.auth?.data.id, +req.params.id]
-    )
+    MariaDB.query(`CALL GetUserPosts(?,?)`, [
+      +req.params.id,
+      +req.auth?.data.id,
+    ])
       .then((rows) => {
         res.status(StatusCodes.OK).json(rows);
       })
