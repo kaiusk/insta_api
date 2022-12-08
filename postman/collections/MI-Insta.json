@@ -127,7 +127,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQb3J0YWxEZW1vIiwiYXVkIjoiYXBpIiwiaWF0IjoxNjYyNjE4NzY4Mzg0fQ.BYoWrUyhPVormXYCD3uiLzzZzZ-viDY-issIoT63eBs",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU3NTY0MzcsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1NzUyODM3fQ.vqyw2WZ_kPKhUd23qn2qWvVslpGyNRFOA1pQlVpa7p8",
 									"type": "string"
 								}
 							]
@@ -135,7 +135,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/users/123",
+							"raw": "http://localhost:3001/api/v1/users/20",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 								"api",
 								"v1",
 								"users",
-								"123"
+								"20"
 							]
 						}
 					},
@@ -716,10 +716,32 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYyNjc0NzgsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsLCJSb2xlIjowfSwiaWF0IjoxNjY2MjYzODc4fQ.gzX3B2sPyB7HkmO8uGu07P2tgvPTM4VHe96OynZOFWc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:3001/api/v1/users/follow/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"follow",
+								"123"
+							]
 						}
 					},
 					"response": [
@@ -884,16 +906,10 @@
 							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"affectedRows\": 1,\n        \"insertId\": \"0\",\n        \"warningStatus\": 0\n    }\n}"
 						}
 					]
-				}
-			],
-			"id": "1bebadd9-8fe4-45eb-bda3-490fbc1546f8"
-		},
-		{
-			"name": "Post",
-			"item": [
+				},
 				{
-					"name": "Get user fallowees posts",
-					"id": "d523e9c6-1109-4567-8fca-4f4686cca5d2",
+					"name": "user profile",
+					"id": "a161f829-861a-4a7a-a5b4-fcc239b63766",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -903,7 +919,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ4NzIyMDEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY0ODY4NjAxfQ.cAIyYx0ce36rDE17EmiccX79Zcj4Jy9CWJypsYW9chU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYyNjc0NzgsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsLCJSb2xlIjowfSwiaWF0IjoxNjY2MjYzODc4fQ.gzX3B2sPyB7HkmO8uGu07P2tgvPTM4VHe96OynZOFWc",
 									"type": "string"
 								}
 							]
@@ -911,7 +927,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/posts/123",
+							"raw": "http://localhost:3001/api/v1/users/profile/122",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -920,30 +936,21 @@
 							"path": [
 								"api",
 								"v1",
-								"posts",
-								"123"
+								"users",
+								"profile",
+								"122"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "03f7f395-4648-401c-a722-a34611f9b983",
-							"name": "New Request",
+							"id": "f60f412e-eae5-4565-8561-9c73e1839eb6",
+							"name": "user profile",
 							"originalRequest": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ4NzIyMDEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY0ODY4NjAxfQ.cAIyYx0ce36rDE17EmiccX79Zcj4Jy9CWJypsYW9chU",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3001/api/v1/posts/123",
+									"raw": "http://localhost:3001/api/v1/users/profile/122",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -952,8 +959,9 @@
 									"path": [
 										"api",
 										"v1",
-										"posts",
-										"123"
+										"users",
+										"profile",
+										"122"
 									]
 								}
 							},
@@ -975,15 +983,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "1535"
+									"value": "221"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"5ff-bGq2uBnnX0S8+Po3hsVAHvpIMLA\""
+									"value": "W/\"dd-Z3eg9nJ52VXO7CL9NoFgUzT3ODU\""
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 04 Oct 2022 08:05:56 GMT"
+									"value": "Thu, 20 Oct 2022 11:05:06 GMT"
 								},
 								{
 									"key": "Connection",
@@ -995,12 +1003,118 @@
 								}
 							],
 							"cookie": [],
-							"body": "[\n    {\n        \"ID\": 417,\n        \"CreationTime\": \"2022-09-16T14:07:21.000Z\",\n        \"Username\": \"cdood3a\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/113x155.png/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 390,\n        \"CreationTime\": \"2022-09-16T14:07:19.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/139x170.bmp/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 319,\n        \"CreationTime\": \"2022-09-16T14:07:14.000Z\",\n        \"Username\": \"cstroton2x\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/215x183.png/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 278,\n        \"CreationTime\": \"2022-09-16T14:07:10.000Z\",\n        \"Username\": \"cstroton2x\",\n        \"likes\": \"4\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/230x190.png/dddddd/000000\"\n    },\n    {\n        \"ID\": 240,\n        \"CreationTime\": \"2022-09-16T14:07:07.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"3\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/174x104.jpg/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 110,\n        \"CreationTime\": \"2022-09-16T14:06:57.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/150x176.bmp/dddddd/000000\"\n    },\n    {\n        \"ID\": 63,\n        \"CreationTime\": \"2022-09-16T14:06:54.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/176x129.png/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 60,\n        \"CreationTime\": \"2022-09-16T14:06:54.000Z\",\n        \"Username\": \"kszanto58\",\n        \"likes\": \"6\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/188x151.bmp/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 25,\n        \"CreationTime\": \"2022-09-16T14:06:50.000Z\",\n        \"Username\": \"kszanto58\",\n        \"likes\": \"2\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/179x109.png/5fa2dd/ffffff\"\n    }\n]"
+							"body": "[\n    {\n        \"Username\": \"ffanshaw3d\",\n        \"Name\": \"Frazier Fanshaw\",\n        \"ProfileImageUrl\": \"http://dummyimage.com/123x174.png/cc0000/ffffff\",\n        \"Bio\": \"Suspendisse potenti. Nullam porttitor lacus at turpis.\",\n        \"posts\": 5,\n        \"followers\": 2,\n        \"followees\": 1\n    }\n]"
 						}
 					]
 				},
 				{
-					"name": "Get post headers",
+					"name": "counters",
+					"id": "27b2c3ac-fbcb-455e-a575-d01ecb699a0c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYzNjM0ODUsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjoiaHR0cHM6Ly9hdmF0YXJzLmRpY2ViZWFyLmNvbS9hcGkvcGVyc29uYXMvc2lncmltaWdyaS5zdmciLCJSb2xlIjowfSwiaWF0IjoxNjY2MzU5ODg1fQ.PJWzCyABS_wBOeGMKdhjayo5HcPuONjUXjWdTvzs6_8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/users/counters/19",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"counters",
+								"19"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "2e5789aa-d9ac-4cdc-951c-fa472291aac3",
+							"name": "counters",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/users/counters/101",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"counters",
+										"101"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49-MgTug1uZWlOGWRU9PXtmFhA6q6g\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 20 Oct 2022 18:06:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"posts\": 1,\n    \"likes\": 1,\n    \"following\": 5,\n    \"followers\": 1,\n    \"comments\": 1,\n    \"follow\": 0\n}"
+						}
+					]
+				}
+			],
+			"id": "1bebadd9-8fe4-45eb-bda3-490fbc1546f8"
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Get followed users posts",
 					"id": "56410bf6-e1c5-4d3f-856c-262edafc070a",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1011,7 +1125,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzMDAzMjEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1Mjk2NzIxfQ.yDE5BSqn4TXivHTHfMyFIbVze0-EF5paG-Mt0Xl3Ei0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjcwMzA2MDAsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiUHJvZmlsZUltYWdlVXJsIjoiaHR0cHM6Ly9hdmF0YXJzLmRpY2ViZWFyLmNvbS9hcGkvcGVyc29uYXMvc2lncmltaWdyaS5zdmciLCJCaW8iOiIiLCJwb3N0cyI6MCwibGlrZXMiOjAsImZvbGxvd2luZyI6MSwiZm9sbG93ZXJzIjowLCJjb21tZW50cyI6MCwiZm9sbG93IjowfSwiaWF0IjoxNjY3MDI3MDAwfQ.wpqGH-LsybHw9RLMjcHpomTR8GSoBJR_nWUzGgsSWXY",
 									"type": "string"
 								}
 							]
@@ -1019,7 +1133,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/posts/overview/123",
+							"raw": "http://localhost:3001/api/v1/posts/overview/19",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1030,7 +1144,7 @@
 								"v1",
 								"posts",
 								"overview",
-								"123"
+								"19"
 							]
 						}
 					},
@@ -1110,8 +1224,106 @@
 					]
 				},
 				{
-					"name": "Get post media",
-					"id": "88b3f201-4a3a-4651-a9b5-c1f35ef7ff10",
+					"name": "Recommended posts",
+					"id": "8e4c66e9-fbb2-49e0-b282-4eb396c1e576",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYyNzUxNzEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjoiaHR0cHM6Ly9hdmF0YXJzLmRpY2ViZWFyLmNvbS9hcGkvcGVyc29uYXMvc2lncmltaWdyaS5zdmciLCJSb2xlIjowfSwiaWF0IjoxNjY2MjcxNTcxfQ.pI5JyTvurZMUP5rQ015HgjzfXATpp6Bl0H4hnoOUn2o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/posts/recommend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"recommend"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "61fa6924-e6c6-4b6b-8e91-674bedb0f1c5",
+							"name": "recommend posts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/posts/recommend",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"posts",
+										"recommend"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "6192"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1830-77eDQS7s/LXQLtGLQzmLulbtrHY\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 20 Oct 2022 13:42:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"ID\": 497,\n        \"CreationTime\": \"2022-09-16T14:07:28.000Z\",\n        \"Username\": \"hbassilashvilie\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/hbassilashvilie.svg\",\n        \"likes\": 2,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/148x213.bmp/cc0000/ffffff\",\n        \"follows\": 2,\n        \"followers\": 5\n    },\n    {\n        \"ID\": 444,\n        \"CreationTime\": \"2022-09-16T14:07:24.000Z\",\n        \"Username\": \"gparr1v\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/gparr1v.svg\",\n        \"likes\": 2,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/110x128.bmp/dddddd/000000\",\n        \"follows\": 1,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 442,\n        \"CreationTime\": \"2022-09-16T14:07:24.000Z\",\n        \"Username\": \"mloines57\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/mloines57.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/232x164.bmp/cc0000/ffffff\",\n        \"follows\": 2,\n        \"followers\": 2\n    },\n    {\n        \"ID\": 399,\n        \"CreationTime\": \"2022-09-16T14:07:20.000Z\",\n        \"Username\": \"icarnegie22\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/icarnegie22.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/200x127.bmp/5fa2dd/ffffff\",\n        \"follows\": 1,\n        \"followers\": 6\n    },\n    {\n        \"ID\": 370,\n        \"CreationTime\": \"2022-09-16T14:07:17.000Z\",\n        \"Username\": \"jberndsen3x\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/jberndsen3x.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/200x174.png/5fa2dd/ffffff\",\n        \"follows\": 4,\n        \"followers\": 2\n    },\n    {\n        \"ID\": 356,\n        \"CreationTime\": \"2022-09-16T14:07:16.000Z\",\n        \"Username\": \"tflintu\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/tflintu.svg\",\n        \"likes\": 2,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/248x122.png/5fa2dd/ffffff\",\n        \"follows\": 2,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 346,\n        \"CreationTime\": \"2022-09-16T14:07:16.000Z\",\n        \"Username\": \"shaverty2h\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/shaverty2h.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/218x144.png/ff4444/ffffff\",\n        \"follows\": 0,\n        \"followers\": 5\n    },\n    {\n        \"ID\": 299,\n        \"CreationTime\": \"2022-09-16T14:07:13.000Z\",\n        \"Username\": \"imeadus3i\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/imeadus3i.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/210x209.bmp/ff4444/ffffff\",\n        \"follows\": 1,\n        \"followers\": 3\n    },\n    {\n        \"ID\": 292,\n        \"CreationTime\": \"2022-09-16T14:07:12.000Z\",\n        \"Username\": \"jovell26\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/jovell26.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/110x233.png/dddddd/000000\",\n        \"follows\": 4,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 241,\n        \"CreationTime\": \"2022-09-16T14:07:08.000Z\",\n        \"Username\": \"gparr1v\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/gparr1v.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/157x138.jpg/dddddd/000000\",\n        \"follows\": 1,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 216,\n        \"CreationTime\": \"2022-09-16T14:07:06.000Z\",\n        \"Username\": \"mloines57\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/mloines57.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/136x241.jpg/cc0000/ffffff\",\n        \"follows\": 2,\n        \"followers\": 2\n    },\n    {\n        \"ID\": 218,\n        \"CreationTime\": \"2022-09-16T14:07:06.000Z\",\n        \"Username\": \"imeadus3i\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/imeadus3i.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/192x107.jpg/dddddd/000000\",\n        \"follows\": 1,\n        \"followers\": 3\n    },\n    {\n        \"ID\": 198,\n        \"CreationTime\": \"2022-09-16T14:07:05.000Z\",\n        \"Username\": \"shaverty2h\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/shaverty2h.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/250x163.jpg/dddddd/000000\",\n        \"follows\": 0,\n        \"followers\": 5\n    },\n    {\n        \"ID\": 206,\n        \"CreationTime\": \"2022-09-16T14:07:05.000Z\",\n        \"Username\": \"mloines57\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/mloines57.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/225x233.jpg/cc0000/ffffff\",\n        \"follows\": 2,\n        \"followers\": 2\n    },\n    {\n        \"ID\": 190,\n        \"CreationTime\": \"2022-09-16T14:07:04.000Z\",\n        \"Username\": \"mbetke5d\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/mbetke5d.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/153x178.jpg/cc0000/ffffff\",\n        \"follows\": 4,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 164,\n        \"CreationTime\": \"2022-09-16T14:07:02.000Z\",\n        \"Username\": \"jberndsen3x\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/jberndsen3x.svg\",\n        \"likes\": 4,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/135x203.bmp/dddddd/000000\",\n        \"follows\": 4,\n        \"followers\": 2\n    },\n    {\n        \"ID\": 125,\n        \"CreationTime\": \"2022-09-16T14:06:59.000Z\",\n        \"Username\": \"jovell26\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/jovell26.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/233x159.bmp/dddddd/000000\",\n        \"follows\": 4,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 59,\n        \"CreationTime\": \"2022-09-16T14:06:53.000Z\",\n        \"Username\": \"mbetke5d\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/mbetke5d.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/177x120.jpg/cc0000/ffffff\",\n        \"follows\": 4,\n        \"followers\": 4\n    },\n    {\n        \"ID\": 43,\n        \"CreationTime\": \"2022-09-16T14:06:52.000Z\",\n        \"Username\": \"imeadus3i\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/imeadus3i.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/187x175.jpg/dddddd/000000\",\n        \"follows\": 1,\n        \"followers\": 3\n    },\n    {\n        \"ID\": 44,\n        \"CreationTime\": \"2022-09-16T14:06:52.000Z\",\n        \"Username\": \"icarnegie22\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/icarnegie22.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/159x157.bmp/cc0000/ffffff\",\n        \"follows\": 1,\n        \"followers\": 6\n    },\n    {\n        \"ID\": 39,\n        \"CreationTime\": \"2022-09-16T14:06:51.000Z\",\n        \"Username\": \"shaverty2h\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/shaverty2h.svg\",\n        \"likes\": 1,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/236x230.png/dddddd/000000\",\n        \"follows\": 0,\n        \"followers\": 5\n    },\n    {\n        \"ID\": 29,\n        \"CreationTime\": \"2022-09-16T14:06:50.000Z\",\n        \"Username\": \"imeadus3i\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/imeadus3i.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/249x203.png/5fa2dd/ffffff\",\n        \"follows\": 1,\n        \"followers\": 3\n    },\n    {\n        \"ID\": 19,\n        \"CreationTime\": \"2022-09-16T14:06:49.000Z\",\n        \"Username\": \"gparr1v\",\n        \"ProfileImageUrl\": \"https://avatars.dicebear.com/api/personas/gparr1v.svg\",\n        \"likes\": 0,\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/177x167.bmp/5fa2dd/ffffff\",\n        \"follows\": 1,\n        \"followers\": 4\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Add comment to the post",
+					"id": "9fa64518-d2ca-4b40-bf3c-662e820184d9",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1126,10 +1338,19 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"this is comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/posts/media/123",
+							"raw": "http://localhost:3001/api/v1/posts/comment/123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1139,15 +1360,15 @@
 								"api",
 								"v1",
 								"posts",
-								"media",
+								"comment",
 								"123"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "5a6a1066-be96-4d86-bcca-b81530eafe95",
-							"name": "Get post media",
+							"id": "bc13108c-8f43-45bd-90c5-ac6917e3f2b6",
+							"name": "Add media to the post",
 							"originalRequest": {
 								"auth": {
 									"type": "bearer",
@@ -1159,8 +1380,17 @@
 										}
 									]
 								},
-								"method": "GET",
+								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fileUrl\":\"https://randomwordgenerator.com/img/picture-generator/57e9d2404f56a514f1dc8460962e33791c3ad6e04e507440752f72d69f45c4_640.jpg\", \r\n    \"fileTypeId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "http://localhost:3001/api/v1/posts/media/123",
 									"protocol": "http",
@@ -1177,8 +1407,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Created",
+							"code": 201,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -1195,15 +1425,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "274"
+									"value": "53"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"112-+EHzjmE+2AEF8Z+XgO93lgiVjhE\""
+									"value": "W/\"35-NNeGODaEefPzEdOfSOyz08NUJcw\""
 								},
 								{
 									"key": "Date",
-									"value": "Sun, 09 Oct 2022 06:26:39 GMT"
+									"value": "Sun, 09 Oct 2022 06:32:29 GMT"
 								},
 								{
 									"key": "Connection",
@@ -1215,117 +1445,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "[\n    {\n        \"ID\": 203,\n        \"MediaFileUrl\": \"http://dummyimage.com/176x183.jpg/5fa2dd/ffffff\",\n        \"Name\": \"Photo\"\n    },\n    {\n        \"ID\": 208,\n        \"MediaFileUrl\": \"http://dummyimage.com/189x227.bmp/5fa2dd/ffffff\",\n        \"Name\": \"Photo\"\n    },\n    {\n        \"ID\": 389,\n        \"MediaFileUrl\": \"http://dummyimage.com/142x137.bmp/cc0000/ffffff\",\n        \"Name\": \"Photo\"\n    }\n]"
-						}
-					]
-				},
-				{
-					"name": "Get post comments",
-					"id": "7f335c39-87da-4729-8af9-72f18e95c034",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzMDAzMjEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1Mjk2NzIxfQ.yDE5BSqn4TXivHTHfMyFIbVze0-EF5paG-Mt0Xl3Ei0",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3001/api/v1/posts/comments/123",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"api",
-								"v1",
-								"posts",
-								"comments",
-								"123"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "9fe39b22-a703-4217-bc6b-892440f5cb6c",
-							"name": "Get post comments",
-							"originalRequest": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzMDAzMjEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1Mjk2NzIxfQ.yDE5BSqn4TXivHTHfMyFIbVze0-EF5paG-Mt0Xl3Ei0",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:3001/api/v1/posts/comments/123",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3001",
-									"path": [
-										"api",
-										"v1",
-										"posts",
-										"comments",
-										"123"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "459"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"1cb-aNx717H6bejqdxIUUNE/owukOWE\""
-								},
-								{
-									"key": "Date",
-									"value": "Sun, 09 Oct 2022 06:27:44 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"ID\": 75,\n        \"Comment\": \"Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat.\",\n        \"CreationTime\": \"2022-09-16T14:13:38.000Z\",\n        \"Name\": \"Rhett Clementson\"\n    },\n    {\n        \"ID\": 281,\n        \"Comment\": \"In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc.\",\n        \"CreationTime\": \"2022-09-16T14:13:57.000Z\",\n        \"Name\": \"Marybelle Betke\"\n    }\n]"
+							"body": "{\n    \"affectedRows\": 1,\n    \"insertId\": \"901\",\n    \"warningStatus\": 0\n}"
 						}
 					]
 				},
@@ -1550,134 +1670,6 @@
 					]
 				},
 				{
-					"name": "Add media to the post",
-					"id": "9fa64518-d2ca-4b40-bf3c-662e820184d9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzMDAzMjEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1Mjk2NzIxfQ.yDE5BSqn4TXivHTHfMyFIbVze0-EF5paG-Mt0Xl3Ei0",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"fileUrl\":\"https://randomwordgenerator.com/img/picture-generator/57e9d2404f56a514f1dc8460962e33791c3ad6e04e507440752f72d69f45c4_640.jpg\", \r\n    \"fileTypeId\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3001/api/v1/posts/media/123",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"api",
-								"v1",
-								"posts",
-								"media",
-								"123"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "bc13108c-8f43-45bd-90c5-ac6917e3f2b6",
-							"name": "Add media to the post",
-							"originalRequest": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzMDAzMjEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1Mjk2NzIxfQ.yDE5BSqn4TXivHTHfMyFIbVze0-EF5paG-Mt0Xl3Ei0",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"fileUrl\":\"https://randomwordgenerator.com/img/picture-generator/57e9d2404f56a514f1dc8460962e33791c3ad6e04e507440752f72d69f45c4_640.jpg\", \r\n    \"fileTypeId\": 1\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:3001/api/v1/posts/media/123",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3001",
-									"path": [
-										"api",
-										"v1",
-										"posts",
-										"media",
-										"123"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "53"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"35-NNeGODaEefPzEdOfSOyz08NUJcw\""
-								},
-								{
-									"key": "Date",
-									"value": "Sun, 09 Oct 2022 06:32:29 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"affectedRows\": 1,\n    \"insertId\": \"901\",\n    \"warningStatus\": 0\n}"
-						}
-					]
-				},
-				{
 					"name": "Add new post",
 					"id": "12c3bf5b-80f5-4ac7-8e89-ea895cd178bd",
 					"protocolProfileBehavior": {
@@ -1800,6 +1792,141 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"affectedRows\": 1,\n    \"insertId\": \"501\",\n    \"warningStatus\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "User posts",
+					"id": "c37740c7-7bc7-405c-a550-0910c00b2dc7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/posts/user/19",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"user",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single posts",
+					"id": "d523e9c6-1109-4567-8fca-4f4686cca5d2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ4NzIyMDEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY0ODY4NjAxfQ.cAIyYx0ce36rDE17EmiccX79Zcj4Jy9CWJypsYW9chU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/posts/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"123"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "03f7f395-4648-401c-a722-a34611f9b983",
+							"name": "New Request",
+							"originalRequest": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ4NzIyMDEsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY0ODY4NjAxfQ.cAIyYx0ce36rDE17EmiccX79Zcj4Jy9CWJypsYW9chU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/posts/123",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"posts",
+										"123"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1535"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5ff-bGq2uBnnX0S8+Po3hsVAHvpIMLA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Oct 2022 08:05:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"ID\": 417,\n        \"CreationTime\": \"2022-09-16T14:07:21.000Z\",\n        \"Username\": \"cdood3a\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/113x155.png/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 390,\n        \"CreationTime\": \"2022-09-16T14:07:19.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/139x170.bmp/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 319,\n        \"CreationTime\": \"2022-09-16T14:07:14.000Z\",\n        \"Username\": \"cstroton2x\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/215x183.png/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 278,\n        \"CreationTime\": \"2022-09-16T14:07:10.000Z\",\n        \"Username\": \"cstroton2x\",\n        \"likes\": \"4\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/230x190.png/dddddd/000000\"\n    },\n    {\n        \"ID\": 240,\n        \"CreationTime\": \"2022-09-16T14:07:07.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"3\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/174x104.jpg/ff4444/ffffff\"\n    },\n    {\n        \"ID\": 110,\n        \"CreationTime\": \"2022-09-16T14:06:57.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/150x176.bmp/dddddd/000000\"\n    },\n    {\n        \"ID\": 63,\n        \"CreationTime\": \"2022-09-16T14:06:54.000Z\",\n        \"Username\": \"sduinbleton2z\",\n        \"likes\": \"0\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/176x129.png/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 60,\n        \"CreationTime\": \"2022-09-16T14:06:54.000Z\",\n        \"Username\": \"kszanto58\",\n        \"likes\": \"6\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/188x151.bmp/5fa2dd/ffffff\"\n    },\n    {\n        \"ID\": 25,\n        \"CreationTime\": \"2022-09-16T14:06:50.000Z\",\n        \"Username\": \"kszanto58\",\n        \"likes\": \"2\",\n        \"MediaTypeID\": 1,\n        \"MediaFileUrl\": \"http://dummyimage.com/179x109.png/5fa2dd/ffffff\"\n    }\n]"
 						}
 					]
 				},
@@ -2011,6 +2138,402 @@
 				}
 			],
 			"id": "4fcb3887-4607-44b2-be60-366f2212cb36"
+		},
+		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "General statistics",
+					"id": "59fa508f-1c8c-406f-ac31-bee9e7bc66f9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU2NTY4MTcsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1NjUzMjE3fQ.dK-nSoOxDyUsIE-an352o_io9ujEfs8E30Zaf_1M5Js",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/stats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"stats"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "cda2a9a9-71d8-452a-ad20-81da43c4b622",
+							"name": "General statistics",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/stats",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"stats"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "142"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8e-ZbtEXoY7kAbhU4/v8KzuO532IEY\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 13 Oct 2022 09:27:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"posts\": \"500\",\n        \"users\": \"203\",\n        \"avgPosts\": \"2.7027\",\n        \"maxPosts\": \"6\",\n        \"avgComments\": \"2.1176\",\n        \"maxComments\": \"7\",\n        \"avgLikes\": \"1.1494\",\n        \"maxLikes\": \"5\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Top 10 users",
+					"id": "52eed599-0176-49ce-a4ab-d383ba9fa4dd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU2NTY4MTcsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1NjUzMjE3fQ.dK-nSoOxDyUsIE-an352o_io9ujEfs8E30Zaf_1M5Js",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/stats/topusers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"topusers"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "af4f110d-f92d-4872-a6f5-856068aa5f9d",
+							"name": "Top 10 users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/stats/topusers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"stats",
+										"topusers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "677"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a5-Ve88jR0I2UlVXFBqb2ZoCHWZae8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 13 Oct 2022 09:28:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"Username\": \"lllorens1u\",\n        \"Name\": \"Laina Llorens\",\n        \"fallowers\": \"7\"\n    },\n    {\n        \"Username\": \"ecordery36\",\n        \"Name\": \"Emlynne Cordery\",\n        \"fallowers\": \"6\"\n    },\n    {\n        \"Username\": \"icarnegie22\",\n        \"Name\": \"Iolanthe Carnegie\",\n        \"fallowers\": \"6\"\n    },\n    {\n        \"Username\": \"scicchinelli3s\",\n        \"Name\": \"Sari Cicchinelli\",\n        \"fallowers\": \"6\"\n    },\n    {\n        \"Username\": \"lhutchinson2f\",\n        \"Name\": \"Loutitia Hutchinson\",\n        \"fallowers\": \"5\"\n    },\n    {\n        \"Username\": \"hbassilashvilie\",\n        \"Name\": \"Hunter Bassilashvili\",\n        \"fallowers\": \"5\"\n    },\n    {\n        \"Username\": \"mkillwick34\",\n        \"Name\": \"Melania Killwick\",\n        \"fallowers\": \"5\"\n    },\n    {\n        \"Username\": \"cdood3a\",\n        \"Name\": \"Casie Dood\",\n        \"fallowers\": \"5\"\n    },\n    {\n        \"Username\": \"rmart2n\",\n        \"Name\": \"Rey Mart\",\n        \"fallowers\": \"5\"\n    },\n    {\n        \"Username\": \"shaverty2h\",\n        \"Name\": \"Siffre Haverty\",\n        \"fallowers\": \"5\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Users by gender",
+					"id": "ce63ca04-e388-4921-959e-42f4c4738bcd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU2NTY4MTcsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1NjUzMjE3fQ.dK-nSoOxDyUsIE-an352o_io9ujEfs8E30Zaf_1M5Js",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/stats/genders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"genders"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "7760705f-628d-403b-9f74-1704177b701f",
+							"name": "Users by gender",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/stats/genders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"stats",
+										"genders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "101"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"65-stXBQgG8T9nYZhKXd/Z6Ft1xP+Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 13 Oct 2022 09:29:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"gender\": \"Undefined\",\n        \"users\": \"74\"\n    },\n    {\n        \"gender\": \"Male\",\n        \"users\": \"59\"\n    },\n    {\n        \"gender\": \"Female\",\n        \"users\": \"69\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Users added by date",
+					"id": "c45e8b8d-8643-4e61-add3-386235b86e69",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU2NTY4MTcsImRhdGEiOnsiSUQiOjIwMSwiVXNlcm5hbWUiOiJzaWdyaW1pZ3JpIiwiTmFtZSI6IlNpaXJpIiwiV2Vic2l0ZSI6bnVsbCwiR2VuZGVySUQiOjIsIkJpbyI6IiIsIkVtYWlsIjoidGVzdEB0ZXN0LmVlIiwiQ3JlYXRpb25UaW1lIjoiMjAyMi0wOS0yOVQwODozNToyMy4wMDBaIiwiUHJvZmlsZUltYWdlVXJsIjpudWxsfSwiaWF0IjoxNjY1NjUzMjE3fQ.dK-nSoOxDyUsIE-an352o_io9ujEfs8E30Zaf_1M5Js",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/stats/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"stats",
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "e1ef6776-0aae-48df-9feb-4434438a1adf",
+							"name": "Users added by date",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/api/v1/stats/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"stats",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "147"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"93-TRGeUNgXKciOUF7rLgzRi14MqW4\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 13 Oct 2022 09:30:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"date\": \"2022-09-15T21:00:00.000Z\",\n        \"users\": \"200\"\n    },\n    {\n        \"date\": \"2022-09-28T21:00:00.000Z\",\n        \"users\": \"2\"\n    },\n    {\n        \"date\": \"2022-10-03T21:00:00.000Z\",\n        \"users\": \"1\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"id": "526ca725-ae1a-414a-9694-0decd81c768f"
 		}
 	]
 }
